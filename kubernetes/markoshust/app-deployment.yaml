@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000        
+      initContainers:
+      - name: init
+        image: alpine:3
+        command: ["/bin/sh", "-c"]
+        args:
+          - chown 1000:1000 /var/www/html;
+            chown 1000:1000 /sock;
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: appdata
+          - mountPath: /sock
+            name: sockdata               
+      containers:
+        - image: henrytrantdt/magento-nginx:1.0.5
+          name: app
+          ports:
+            - containerPort: 8000
+            - containerPort: 8443
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: appdata
+            - name: ssldata
+              mountPath: /etc/nginx/certs
+              readOnly: true
+            - mountPath: /sock
+              name: sockdata              
+      restartPolicy: Always
+      volumes:
+        - name: appdata
+          persistentVolumeClaim:
+            claimName: appdata
+        - name: sockdata
+          persistentVolumeClaim:
+            claimName: sockdata            
+        - name: ssldata
+          configMap:
+            defaultMode: 0400
+            name: ssldata
+            items:
+            - key: sslcert
+              path: nginx.crt
+            - key: sslkey
+              path: nginx.key

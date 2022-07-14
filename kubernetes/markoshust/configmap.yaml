@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app-ssl-data
+  name: ssldata
+data:
+  sslcert: |
+    -----BEGIN CERTIFICATE-----
+    MIIDazCCAlOgAwIBAgIUJ20D2B9FDKdqpmTnD6DlrdWgXE0wDQYJKoZIhvcNAQEL
+    BQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM
+    GEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0yMjA3MTMxMTA1NThaFw0yMzA3
+    MTMxMTA1NThaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEw
+    HwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEB
+    AQUAA4IBDwAwggEKAoIBAQC/QvQqGkEfVZcIPvK6Kq8NfYqRElkiyGcJFfQf/oLR
+    y3+NMkarsvHwTsMCmY6Z8vbyALhievFVhy99D7gCuIppsScujMkazoUyp0addn/j
+    qRZoQqJywv4jkRy1tMazJXN1D9rTUIrDLnN7tOowI1KYeUWmp9B3o7KrKH4MhSpF
+    jWgccaXSELGwagAlG6dv5Dncp7D8g1OY4QZoiPo/U0hZ1URNZA/Mrz9qHLp8Eshs
+    EmGBPoIYP1KtW2GsgfTtz1ifYWU4ycYnIDeTMLH5uYXCyw4TgnMhUeyS+f0qBI7g
+    3jL+3NFYeF46cclQarVsdpSy+smrtl4vOBsSPnVhbovhAgMBAAGjUzBRMB0GA1Ud
+    DgQWBBTyFec8V7pPp6l18K3XzklOupC9zTAfBgNVHSMEGDAWgBTyFec8V7pPp6l1
+    8K3XzklOupC9zTAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQC1
+    Xl4fnN4KXDHKWgm3fVwYTKt95mbuTosd90cH0aw8cqwTmy6YQ5Cu2qByQlLQK0HP
+    /chiMc1DQmiSNh5ce2abGawtQu33kB2pbdtTby1Qe7H12djb8h2mWtq6LqqTeFwu
+    RRLPEzdf6C7qrxMHRHCuOzIdLvYWV+ZQpyKMqH0rVbhqa7Hui8IpzQAvsT3TJt2u
+    vfQ2DQw8HyXLlB30tOgLgfLJtVHu6Lsxr6qD9GEd0Y8+bbD8rmL6f+EYtxSFdmkR
+    cyNX8WfMG7zIrx/IIPEVawj6FGooQjFTqAHULP/dqHYDRrVbp9KY4W7FzMehedfM
+    oAWnzmOps8GTFL20UE4W
+    -----END CERTIFICATE-----    
+  sslkey: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC/QvQqGkEfVZcI
+    PvK6Kq8NfYqRElkiyGcJFfQf/oLRy3+NMkarsvHwTsMCmY6Z8vbyALhievFVhy99
+    D7gCuIppsScujMkazoUyp0addn/jqRZoQqJywv4jkRy1tMazJXN1D9rTUIrDLnN7
+    tOowI1KYeUWmp9B3o7KrKH4MhSpFjWgccaXSELGwagAlG6dv5Dncp7D8g1OY4QZo
+    iPo/U0hZ1URNZA/Mrz9qHLp8EshsEmGBPoIYP1KtW2GsgfTtz1ifYWU4ycYnIDeT
+    MLH5uYXCyw4TgnMhUeyS+f0qBI7g3jL+3NFYeF46cclQarVsdpSy+smrtl4vOBsS
+    PnVhbovhAgMBAAECggEBAIcMPKFZ5m+8nKc642LmbrJk2amzvfKcdHxq3vSUXkTK
+    nubRACuOb9zRkErOqG01rH6WWZtX2f4dNT/mEHUDXuBgMR1iVUGzX0Oz712R5Z2X
+    r/WwT0ofOxlcBlybJ84o/IxExKt+7GwC6ZII3W9eEZ0NzEtvpPhFQwwtzEsE4CM5
+    C6yxIbuWeQEiuuGifq1aCH+nHCGhFfA6shVFK0bfwtltHeDyZhJEPxQg1IUlJHEo
+    YOEJLscQ/A6ui4wvcuAcCcN44WGvzDEjLtr/X93h1Exrk+r+kukrej0N7EgESsLL
+    03w5okVtwC5ndBZ5hwd+Mj2jOc5XDr+P0zNA16HVvpECgYEA6pH28mMB1CumR8YQ
+    6eTAu6D3F4Xy9/E5eIm7OFBoS0yQ4wCSUUhXKu/M3Zcqo75t9MnFFRSHBm9Mxfps
+    tXw6KH/YNpD/8cN4o825RJn7ujtN0yW5HwglEWTHUPblbLuhpmR7oTPwQSA1gkNp
+    fUVS8E+1yiPznrf31Q8Q2X+hzd0CgYEA0LwajMVuKKRLL4xZH6bDIpE4DiM0T6G+
+    H6R87g1InbRLN1PMoeU/tuqD8zBYUiPJqrf7oaVe2Q85YDzVsbfWANe4M2SxjLtU
+    3FMOEXvQK/yBe4ey9QCPgMyCq9ASJ/ymQuz35y820isxiXQam+43vezRdPVA8luu
+    ZGOUwaKan9UCgYEA3oec67PrfzntpHeNgiamhRmeb+1+Y6Ov7t9TAoideJnpdcEM
+    Dhp/v1cBVlLbe73jmG92DZqMwhkCj2sUiFOS5Orr1lBWzyeuok8/bIpcWf96xE4s
+    Qfk7GTYvNGsVmcKjBzSaaILacR46RRroz5Pdq+ciweK7cp56eeCyDnRbru0CgYAV
+    c29LDjMO7Ctp3IOANDQThlb7ZPTIRjfyqoXINQdEZbXhHrSF4rhUhO9Ae7Rn5JOh
+    /rxWVVdU+TKNSFMxq1HLzl94sJ1qeAn1hneIpm+zRYTM/BoRAZi9xMac/4oOH/G6
+    KP4k/P4mRRgXJx5g7e8+jmrMGTQuc+uNF4q/B4XabQKBgBaYRJRiIHB1gZSigI9J
+    7MlT1e56V9o2AEMdJ5zqfEJfRjbVRLM7za/klKbNarmAhfqUAURP7ht2bN7WoQFt
+    CfWwYRNN8jGiU8xI5h7i8/n6bPVSC/3ONPlsdyobcOz1EnzKe4V0PurvcR/vy7L9
+    KcTRzK5YW5jBsTkzKWyrJm0/
+    -----END PRIVATE KEY-----     
+---
+apiVersion: v1
+data:
+  MYSQL_DATABASE: magento
+  MYSQL_HOST: db
+  MYSQL_INTEGRATION_DATABASE: magento_integration_tests
+  MYSQL_INTEGRATION_HOST: db
+  MYSQL_INTEGRATION_PASSWORD: magento
+  MYSQL_INTEGRATION_ROOT_PASSWORD: magento
+  MYSQL_INTEGRATION_USER: magento
+  MYSQL_PASSWORD: magento
+  MYSQL_ROOT_PASSWORD: magento
+  MYSQL_USER: magento
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db-env-db-env
+  name: env-db-env
+---
+apiVersion: v1
+data:
+  BLACKFIRE_CLIENT_ID: ""
+  BLACKFIRE_CLIENT_TOKEN: ""
+  COMPOSER_DISABLE_XDEBUG_WARN: "1"
+  PHP_CS_FIXER_IGNORE_ENV: "1"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: phpfpm-env-phpfpm-env
+  name: env-phpfpm-env
+---
+apiVersion: v1
+data:
+  RABBITMQ_DEFAULT_PASS: magento
+  RABBITMQ_DEFAULT_USER: magento
+  RABBITMQ_DEFAULT_VHOST: /
+  RABBITMQ_HEALTHCHECK_TIMEOUT: "10"
+  RABBITMQ_HOST: rabbitmq
+  RABBITMQ_MANAGEMENT_PORT: "15672"
+  RABBITMQ_PORT: "5672"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rabbitmq-env-rabbitmq-env
+  name: env-rabbitmq-env

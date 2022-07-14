@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: phpfpm
+  name: phpfpm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: phpfpm
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: phpfpm
+    spec:
+      # security context does not need yet
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000        
+      initContainers:
+      - name: init
+        image: alpine:3
+        command: ["/bin/sh", "-c"]
+        args:
+          - chown 1000:1000 /var/www/html;
+            chown 1000:1000 /sock;
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: appdata
+          - mountPath: /sock
+            name: sockdata            
+      containers:      
+        - env:
+            - name: BLACKFIRE_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: BLACKFIRE_CLIENT_ID
+                  name: env-phpfpm-env
+            - name: BLACKFIRE_CLIENT_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  key: BLACKFIRE_CLIENT_TOKEN
+                  name: env-phpfpm-env
+            - name: COMPOSER_DISABLE_XDEBUG_WARN
+              valueFrom:
+                configMapKeyRef:
+                  key: COMPOSER_DISABLE_XDEBUG_WARN
+                  name: env-phpfpm-env
+            - name: PHP_CS_FIXER_IGNORE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  key: PHP_CS_FIXER_IGNORE_ENV
+                  name: env-phpfpm-env
+          image: henrytrantdt/magento-phpfpm:1.0.4
+          name: phpfpm         
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: appdata
+            - mountPath: /sock
+              name: sockdata
+      restartPolicy: Always
+      volumes:
+        - name: appdata
+          persistentVolumeClaim:
+            claimName: appdata
+        - name: sockdata
+          persistentVolumeClaim:
+            claimName: sockdata            
