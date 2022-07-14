@@ -1,12 +1,11 @@
-name: Build Nginx Image
-
+name: Build Magento Images
 on:
   push:
     branches:
       - 'main'
 
 jobs:
-  build-nginx-image:
+  build-magento-images:
     runs-on: ubuntu-latest
     steps:
       -
@@ -25,11 +24,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and push
+        name: Build and push nginx
         uses: docker/build-push-action@v3
         with:
           context: ./application/nginx/
           file: ./application/nginx/Dockerfile
           push: true
-          tags: henrytrantdt/nginx:latest
+          tags: henrytrantdt/magento-nginx:latest
+      -
+        name: Build and push phpfpm
+        uses: docker/build-push-action@v3
+        with:
+          context: ./application/php/
+          file: ./application/php/Dockerfile
+          push: true
+          tags: henrytrantdt/magento-phpfpm:latest          
           
