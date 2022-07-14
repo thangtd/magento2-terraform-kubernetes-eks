@@ -26,6 +26,8 @@ resource "helm_release" "helm_argo_cd" {
 
 resource "kubernetes_manifest" "argocd_magento2_app" {
 
+  depends_on = [helm_release.helm_argo_cd]
+
   manifest = {
     "apiVersion" = "argoproj.io/v1alpha1"
     "kind"       = "Application"
@@ -43,27 +45,6 @@ resource "kubernetes_manifest" "argocd_magento2_app" {
         "path"           = "kubernetes/markoshust"
         "repoURL"        = "https://github.com/thangtd/magento2-terraform-kubernetes-eks.git"
         "targetRevision" = "HEAD"
-      }
-      "syncPolicy" = {
-        "automated" = {
-          "allowEmpty" = false
-          "prune"      = true
-          "selfHeal"   = true
-        }
-        "retry" = {
-          "backoff" = {
-            "duration"    = "5s"
-            "factor"      = 2
-            "maxDuration" = "3m"
-          }
-          "limit" = 5
-        }
-        "syncOptions" = [
-          "Validate=false",
-          "CreateNamespace=true",
-          "PrunePropagationPolicy=foreground",
-          "PruneLast=true",
-        ]
       }
     }
   }

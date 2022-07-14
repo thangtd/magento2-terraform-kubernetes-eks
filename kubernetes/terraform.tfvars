@@ -1,4 +1,4 @@
-org = "org"
+org      = "org"
 division = "devops"
-app = "m2"
-env = "dev"
+app      = "m2"
+env      = "dev"

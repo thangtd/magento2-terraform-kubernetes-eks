@@ -13,7 +13,7 @@ provider "aws" {
   default_tags {
     tags = {
       Workspace = terraform.workspace
-      Tool = "terraform"
+      Tool      = "terraform"
     }
-  }  
+  }
 }

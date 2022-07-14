@@ -6,7 +6,7 @@ locals {
     Div = var.division
     App = var.app
   }
-  
+
 }
 
 variable "region" {
@@ -46,33 +46,33 @@ variable "ng_ssh_key" {
   type = string
 }
 
-variable "ami_type" { 
-    type = string 
+variable "ami_type" {
+  type = string
 }
 
-variable "instance_types" { 
-    type = set(string) 
+variable "instance_types" {
+  type = set(string)
 }
 
-variable "capacity_type" { 
-    type = string 
+variable "capacity_type" {
+  type = string
 }
 
-variable "kube_version" { 
-    type = string
+variable "kube_version" {
+  type = string
 }
 
-variable "ng_desired_size" { 
-    type = number 
-    default = 1
+variable "ng_desired_size" {
+  type    = number
+  default = 1
 }
 
-variable "ng_max_size" { 
-    type = number 
-    default = 3
+variable "ng_max_size" {
+  type    = number
+  default = 3
 }
 
-variable "ng_min_size" { 
-    type = number 
-    default = 1
+variable "ng_min_size" {
+  type    = number
+  default = 1
 }

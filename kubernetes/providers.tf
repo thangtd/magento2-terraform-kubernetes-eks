@@ -9,26 +9,26 @@ terraform {
       version = "~>4.20.0"
     }
     helm = {
-      source = "hashicorp/helm"
+      source  = "hashicorp/helm"
       version = "~>2.6.0"
-    } 
+    }
   }
 }
 
 data "aws_ssm_parameter" "m2_ssm_eks_cluster_name" {
-  name  = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_cluster_name"
+  name = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_cluster_name"
 }
 
 data "aws_ssm_parameter" "m2_ssm_vpc_id" {
-  name  = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_vpc_id"
+  name = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_vpc_id"
 }
 
 data "aws_ssm_parameter" "m2_ssm_private_subnets" {
-  name  = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_private_subnets"
+  name = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_private_subnets"
 }
 
 data "aws_ssm_parameter" "m2_ssm_public_subnets" {
-  name  = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_public_subnets"
+  name = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_public_subnets"
 }
 
 data "aws_eks_cluster" "eks_cluster" {
@@ -46,9 +46,9 @@ provider "aws" {
   default_tags {
     tags = {
       Workspace = terraform.workspace
-      Tool = "terraform"
+      Tool      = "terraform"
     }
-  }  
+  }
 }
 
 
