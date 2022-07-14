@@ -6,9 +6,12 @@ on:
       - 'main'
 
 jobs:
-  docker:
+  build-nginx-image:
     runs-on: ubuntu-latest
     steps:
+      -
+        name: Checkout Code
+        uses: actions/checkout@v2.4.2
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
