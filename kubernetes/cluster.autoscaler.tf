@@ -1,4 +1,3 @@
-
 # create aws resource iam policy object
 resource "aws_iam_policy" "cluster_auto_scale_policy" {
   name        = "cluster_auto_scale_policy"
@@ -8,11 +7,11 @@ resource "aws_iam_policy" "cluster_auto_scale_policy" {
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "autoscaling:DescribeAutoScalingGroups",
           "autoscaling:DescribeAutoScalingInstances",
           "autoscaling:DescribeLaunchConfigurations",
@@ -20,17 +19,17 @@ resource "aws_iam_policy" "cluster_auto_scale_policy" {
           "ec2:DescribeInstanceTypes",
           "ec2:DescribeLaunchTemplateVersions"
         ],
-        "Resource": ["*"]
+        "Resource" : ["*"]
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "autoscaling:SetDesiredCapacity",
           "autoscaling:TerminateInstanceInAutoScalingGroup",
           "ec2:DescribeInstanceTypes",
           "eks:DescribeNodegroup"
         ],
-        "Resource": ["*"]
+        "Resource" : ["*"]
       }
     ]
   })
@@ -57,7 +56,7 @@ resource "aws_iam_role" "cluster_auto_scale_role" {
         }
       ]
     }
-  )  
+  )
 }
 
 # attach aws resource iam role policy object to aws resource iam role object
@@ -83,7 +82,7 @@ resource "kubernetes_service_account_v1" "cluster_auto_scaling_sa" {
 }
 
 # add helm chart for cluster auto scaler 
-resource "helm_release" "aws-cluster-autoscaler-controller" {
+resource "helm_release" "cluster-autoscaler" {
   name       = "aws-cluster-autoscaler-controller"
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
@@ -106,12 +105,12 @@ resource "helm_release" "aws-cluster-autoscaler-controller" {
   }
 
   set {
-    name = "rbac.serviceAccount.create"
+    name  = "rbac.serviceAccount.create"
     value = false
   }
 
   set {
-    name = "rbac.serviceAccount.name"
+    name  = "rbac.serviceAccount.name"
     value = var.cluster-auto-scaling-sa
   }
 

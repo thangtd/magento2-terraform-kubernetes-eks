@@ -15,22 +15,22 @@ variable "account_id" {
 }
 
 variable "org" {
-  type = string
+  type    = string
   default = "org"
 }
 
 variable "division" {
-  type = string
+  type    = string
   default = "devops"
 }
 
 variable "app" {
-  type = string
+  type    = string
   default = "m2"
 }
 
 variable "env" {
-  type = string
+  type    = string
   default = "dev"
 }
 
@@ -60,6 +60,6 @@ variable "aws-loadbalancer-sa" {
 }
 
 variable "cluster-auto-scaling-sa" {
-  type = string
+  type    = string
   default = "cluster-auto-scaling-controller"
 }

@@ -57,9 +57,9 @@ resource "aws_subnet" "m2_public_subnet_1" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                      = "${local.name}-public-subnet-1"
+    Name                                          = "${local.name}-public-subnet-1"
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                  = 1
+    "kubernetes.io/role/elb"                      = 1
   }
 }
 
@@ -71,9 +71,9 @@ resource "aws_subnet" "m2_public_subnet_2" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                      = "${local.name}-public-subnet-2"
+    Name                                          = "${local.name}-public-subnet-2"
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                  = 1
+    "kubernetes.io/role/elb"                      = 1
   }
 }
 
@@ -84,9 +84,9 @@ resource "aws_subnet" "m2_private_subnet_1" {
   availability_zone = data.aws_availability_zones.az.names[0]
 
   tags = {
-    Name                                      = "${local.name}-private-subnet-1"
+    Name                                          = "${local.name}-private-subnet-1"
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"         = 1
+    "kubernetes.io/role/internal-elb"             = 1
   }
 }
 
@@ -97,9 +97,9 @@ resource "aws_subnet" "m2_private_subnet_2" {
   availability_zone = data.aws_availability_zones.az.names[1]
 
   tags = {
-    Name                                      = "${local.name}-private-subnet-2"
+    Name                                          = "${local.name}-private-subnet-2"
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"         = 1
+    "kubernetes.io/role/internal-elb"             = 1
   }
 }
 
@@ -157,7 +157,7 @@ resource "aws_route_table" "m2_private_route_table" {
 ################################################################################
 
 resource "aws_eks_cluster" "m2_eks" {
-  name     = "${local.cluster_name}"
+  name     = local.cluster_name
   role_arn = aws_iam_role.eks_iam_role.arn
 
   version = var.kube_version
@@ -245,10 +245,10 @@ resource "aws_eks_node_group" "eks_node_group" {
     aws_eks_cluster.m2_eks
   ]
 
-  tags   = merge(
-    local.common_tags, 
+  tags = merge(
+    local.common_tags,
     {
-      "k8s.io/cluster-autoscaler/enabled" = true
+      "k8s.io/cluster-autoscaler/enabled"               = true
       "k8s.io/cluster-autoscaler/${local.cluster_name}" = "owned"
     }
   )
