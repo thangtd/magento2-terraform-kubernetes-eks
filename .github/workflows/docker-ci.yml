@@ -27,16 +27,16 @@ jobs:
         name: Build and push nginx
         uses: docker/build-push-action@v3
         with:
-          context: ./application/nginx/
-          file: ./application/nginx/Dockerfile
+          context: ./application/
+          file: ./application/docker/nginx/Dockerfile
           push: true
           tags: henrytrantdt/magento-nginx:latest
       -
         name: Build and push phpfpm
         uses: docker/build-push-action@v3
         with:
-          context: ./application/php/
-          file: ./application/php/Dockerfile
+          context: ./application/
+          file: ./application/docker/php/Dockerfile
           push: true
           tags: henrytrantdt/magento-phpfpm:latest          
           
