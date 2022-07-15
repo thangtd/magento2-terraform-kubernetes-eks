@@ -16,18 +16,22 @@ variable "account_id" {
 
 variable "org" {
   type = string
+  default = "org"
 }
 
 variable "division" {
   type = string
+  default = "devops"
 }
 
 variable "app" {
   type = string
+  default = "m2"
 }
 
 variable "env" {
   type = string
+  default = "dev"
 }
 
 variable "ebs-csi-controller-sa" {
@@ -53,4 +57,9 @@ variable "amazon-cloudwatch-sa" {
 variable "aws-loadbalancer-sa" {
   type    = string
   default = "aws-load-balancer-controller"
+}
+
+variable "cluster-auto-scaling-sa" {
+  type = string
+  default = "cluster-auto-scaling-controller"
 }

@@ -1,5 +1,6 @@
 locals {
-  name = "${var.org}-${var.division}-${var.app}-${var.env}"
+  name         = "${var.org}-${var.division}-${var.app}-${var.env}"
+  cluster_name = "${local.name}-eks"
   common_tags = {
     Org = var.org
     Env = var.env
@@ -10,56 +11,68 @@ locals {
 }
 
 variable "region" {
-  type = string
+  type    = string
+  default = "ap-southeast-1"
 }
 
 variable "bastion_ami" {
-  type = string
+  type    = string
+  default = "ami-0c802847a7dd848c0"
 }
 
 variable "org" {
-  type = string
+  type    = string
+  default = "org"
 }
 
 variable "division" {
-  type = string
+  type    = string
+  default = "devops"
 }
 
 variable "app" {
-  type = string
+  type    = string
+  default = "m2"
 }
 
 variable "env" {
-  type = string
+  type    = string
+  default = "dev"
 }
 
-
 variable "vpc_cidr" {
-  type = string
+  type    = string
+  default = "10.0.0.0/16"
 }
 
 variable "bastion_ssh_key" {
-  type = string
+  type    = string
+  default = "terraform"
 }
 
 variable "ng_ssh_key" {
-  type = string
+  type    = string
+  default = "terraform"
 }
 
 variable "ami_type" {
-  type = string
+  type    = string
+  default = "AL2_x86_64"
 }
 
 variable "instance_types" {
-  type = set(string)
+  type    = set(string)
+  default = ["t2.medium", "t3.medium"]
 }
 
 variable "capacity_type" {
-  type = string
+  type    = string
+  default = "SPOT"
 }
 
 variable "kube_version" {
-  type = string
+  type    = string
+  default = "1.21"
 }
 
 variable "ng_desired_size" {

@@ -58,7 +58,7 @@ resource "aws_subnet" "m2_public_subnet_1" {
 
   tags = {
     Name                                      = "${local.name}-public-subnet-1"
-    "kubernetes.io/cluster/${local.name}-eks" = "shared"
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/elb"                  = 1
   }
 }
@@ -72,7 +72,7 @@ resource "aws_subnet" "m2_public_subnet_2" {
 
   tags = {
     Name                                      = "${local.name}-public-subnet-2"
-    "kubernetes.io/cluster/${local.name}-eks" = "shared"
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/elb"                  = 1
   }
 }
@@ -85,7 +85,7 @@ resource "aws_subnet" "m2_private_subnet_1" {
 
   tags = {
     Name                                      = "${local.name}-private-subnet-1"
-    "kubernetes.io/cluster/${local.name}-eks" = "shared"
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"         = 1
   }
 }
@@ -98,7 +98,7 @@ resource "aws_subnet" "m2_private_subnet_2" {
 
   tags = {
     Name                                      = "${local.name}-private-subnet-2"
-    "kubernetes.io/cluster/${local.name}-eks" = "shared"
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"         = 1
   }
 }
@@ -157,7 +157,7 @@ resource "aws_route_table" "m2_private_route_table" {
 ################################################################################
 
 resource "aws_eks_cluster" "m2_eks" {
-  name     = "${local.name}-eks"
+  name     = "${local.cluster_name}"
   role_arn = aws_iam_role.eks_iam_role.arn
 
   version = var.kube_version
@@ -179,7 +179,7 @@ resource "aws_eks_cluster" "m2_eks" {
 }
 
 resource "aws_iam_role" "eks_iam_role" {
-  name = "${local.name}-eks-iam-role"
+  name = "${local.cluster_name}-iam-role"
 
   assume_role_policy = <<POLICY
 {
@@ -211,7 +211,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy_attachment" {
 
 resource "aws_eks_node_group" "eks_node_group" {
   cluster_name    = aws_eks_cluster.m2_eks.name
-  node_group_name = "${local.name}-eks-ng"
+  node_group_name = "${local.cluster_name}-ng"
   node_role_arn   = aws_iam_role.eks_ng_iam_role.arn
   #subnet_ids      = [aws_subnet.m2_private_subnet_1.id, aws_subnet.m2_private_subnet_2.id]
   subnet_ids = [aws_subnet.m2_public_subnet_1.id, aws_subnet.m2_public_subnet_2.id]
@@ -245,12 +245,18 @@ resource "aws_eks_node_group" "eks_node_group" {
     aws_eks_cluster.m2_eks
   ]
 
-  tags   = local.common_tags
+  tags   = merge(
+    local.common_tags, 
+    {
+      "k8s.io/cluster-autoscaler/enabled" = true
+      "k8s.io/cluster-autoscaler/${local.cluster_name}" = "owned"
+    }
+  )
   labels = local.common_tags
 }
 
 resource "aws_iam_role" "eks_ng_iam_role" {
-  name = "${local.name}-eks-ng-role"
+  name = "${local.cluster_name}-ng-role"
 
   assume_role_policy = jsonencode({
     Statement = [{

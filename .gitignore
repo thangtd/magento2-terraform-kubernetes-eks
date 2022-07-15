@@ -8,3 +8,4 @@ terraform-on-aws-eks-main/*
 *.tfstate
 *.pem
 *.key
+*.tfplan

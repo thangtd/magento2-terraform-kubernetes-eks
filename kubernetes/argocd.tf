@@ -19,7 +19,7 @@ resource "helm_release" "helm_argo_cd" {
   namespace = kubernetes_namespace.argocd.metadata.0.name
 
   values = [
-    "${file("charts/agocd_values.yaml")}"
+    "${file("charts/agocd.values.yaml")}"
   ]
 
 }
@@ -42,7 +42,7 @@ resource "kubernetes_manifest" "argocd_magento2_app" {
       }
       "project" = "default"
       "source" = {
-        "path"           = "kubernetes/markoshust"
+        "path"           = "kubernetes/manifest"
         "repoURL"        = "https://github.com/thangtd/magento2-terraform-kubernetes-eks.git"
         "targetRevision" = "HEAD"
       }
