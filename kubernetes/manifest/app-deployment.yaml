@@ -27,21 +27,23 @@ spec:
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
-        runAsGroup: 1000        
+        runAsGroup: 1000
       initContainers:
-      - name: init
-        image: alpine:3
-        command: ["/bin/sh", "-c"]
-        args:
-          - 
-            chown 1000:1000 /sock;
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-          - mountPath: /sock
-            name: sockdata               
+        - name: init
+          image: alpine:3
+          command: ["/bin/sh", "-c"]
+          args:
+            - chown 1000:1000 /sock;
+              chown 1000:1000 /tmp/appdata;
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /sock
+              name: sockdata
+            - mountPath: /tmp/appdata
+              name: appdata              
       containers:
-        - image: henrytrantdt/magento-nginx:main
+        - image: henrytrantdt/magento-nginx:sha-4420051
           name: app
           ports:
             - containerPort: 8000
@@ -52,18 +54,23 @@ spec:
               mountPath: /etc/nginx/certs
               readOnly: true
             - mountPath: /sock
-              name: sockdata              
+              name: sockdata
+            - mountPath: /tmp/appdata
+              name: appdata                  
       restartPolicy: Always
       volumes:
         - name: sockdata
           persistentVolumeClaim:
-            claimName: sockdata            
+            claimName: sockdata
+        - name: appdata
+          persistentVolumeClaim:
+            claimName: appdata            
         - name: ssldata
           configMap:
             defaultMode: 0400
             name: ssldata
             items:
-            - key: sslcert
-              path: nginx.crt
-            - key: sslkey
-              path: nginx.key
+              - key: sslcert
+                path: nginx.crt
+              - key: sslkey
+                path: nginx.key

@@ -95,7 +95,14 @@ COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 # TODO: baking source code should be done during app deployment
 COPY ./src/ /var/www/html
 
-RUN chown -R app:app /var/www
+RUN composer install --no-interaction
+
+# set permissions
+RUN cd /var/www/html/  \
+&& find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} + \
+&& find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} + \
+&& chown -R app:app . \
+&& chmod u+x bin/magento
 
 USER app:app
 
