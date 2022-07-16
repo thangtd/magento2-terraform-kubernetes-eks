@@ -97,5 +97,7 @@ COPY ./src/ /var/www/hml
 COPY ./src/CHANGELOG.md /tmp
 
 USER app:app
-VOLUME /var/www
+
+# VOLUME /var/www
+
 WORKDIR /var/www/html
