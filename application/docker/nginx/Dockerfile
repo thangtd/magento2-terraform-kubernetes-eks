@@ -25,6 +25,9 @@ RUN mkdir -p /etc/nginx/html /var/www/html \
 COPY ./docker/nginx/conf/nginx.conf /etc/nginx/
 COPY ./docker/nginx/conf/default.conf /etc/nginx/conf.d/
 
+# copy source code
+COPY ./src/ /var/www/hml
+
 EXPOSE 8443
 
 USER app:app
