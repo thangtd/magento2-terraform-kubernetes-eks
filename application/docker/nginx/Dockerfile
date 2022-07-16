@@ -21,20 +21,17 @@ RUN cd /usr/local/bin/ \
 RUN mkdir -p /etc/nginx/html /var/www/html \
   && chown -R app:app /etc/nginx /var/www /var/cache/nginx /var/run/nginx.pid /sock
 
+USER app:app
+
 # TODO: should be replaced by k8s configmap
 COPY ./docker/nginx/conf/nginx.conf /etc/nginx/
 COPY ./docker/nginx/conf/default.conf /etc/nginx/conf.d/
 
 # TODO: source code needs to be baked during app deployment
-COPY ./src/ /var/www/hml
-COPY ./src /tmp
-COPY ./src/CHANGELOG.md /tmp
-RUN ls -alh /var/www/hml
+COPY ./src/ /var/www/html
 
 EXPOSE 8443
 
-USER app:app
-
-# VOLUME /var/www
+VOLUME /var/www
 
 WORKDIR /var/www/html
