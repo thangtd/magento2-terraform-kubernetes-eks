@@ -33,25 +33,21 @@ spec:
         image: alpine:3
         command: ["/bin/sh", "-c"]
         args:
-          - chown 1000:1000 /var/www/html;
+          - 
             chown 1000:1000 /sock;
         securityContext:
           runAsUser: 0
         volumeMounts:
-          - mountPath: /var/www/html
-            name: appdata
           - mountPath: /sock
             name: sockdata               
       containers:
-        - image: henrytrantdt/magento-nginx:1.0.5
+        - image: henrytrantdt/magento-nginx:main
           name: app
           ports:
             - containerPort: 8000
             - containerPort: 8443
           resources: {}
           volumeMounts:
-            - mountPath: /var/www/html
-              name: appdata
             - name: ssldata
               mountPath: /etc/nginx/certs
               readOnly: true
@@ -59,9 +55,6 @@ spec:
               name: sockdata              
       restartPolicy: Always
       volumes:
-        - name: appdata
-          persistentVolumeClaim:
-            claimName: appdata
         - name: sockdata
           persistentVolumeClaim:
             claimName: sockdata            
