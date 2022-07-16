@@ -85,8 +85,6 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
 RUN curl -sS https://getcomposer.org/installer | \
   php -- --install-dir=/usr/local/bin --filename=composer
 
-USER app:app
-
 # TODO: should be replaced by k8s configmap
 COPY ./docker/phpfpm/conf/blackfire.ini $PHP_INI_DIR/conf.d/blackfire.ini
 COPY ./docker/phpfpm/conf/msmtprc /etc/msmtprc
@@ -96,6 +94,10 @@ COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 
 # TODO: baking source code should be done during app deployment
 COPY ./src/ /var/www/html
+
+RUN chown -R app:app /var/www
+
+USER app:app
 
 VOLUME /var/www
 

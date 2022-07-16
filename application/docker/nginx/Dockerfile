@@ -18,10 +18,7 @@ RUN cd /usr/local/bin/ \
   && curl -L https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-$TARGETARCH -o mkcert \
   && chmod +x mkcert
 
-RUN mkdir -p /etc/nginx/html /var/www/html \
-  && chown -R app:app /etc/nginx /var/www /var/cache/nginx /var/run/nginx.pid /sock
-
-USER app:app
+RUN mkdir -p /etc/nginx/html /var/www/html
 
 # TODO: should be replaced by k8s configmap
 COPY ./docker/nginx/conf/nginx.conf /etc/nginx/
@@ -29,6 +26,10 @@ COPY ./docker/nginx/conf/default.conf /etc/nginx/conf.d/
 
 # TODO: source code needs to be baked during app deployment
 COPY ./src/ /var/www/html
+
+RUN chown -R app:app /etc/nginx /var/www /var/cache/nginx /var/run/nginx.pid /sock
+
+USER app:app
 
 EXPOSE 8443
 
