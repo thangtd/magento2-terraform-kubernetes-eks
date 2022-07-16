@@ -93,7 +93,8 @@ COPY ./docker/phpfpm/conf/php-fpm.conf /usr/local/etc/
 COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 
 # TODO: baking source code should be done during app deployment
-ADD ./src/ /var/www/hml
+COPY ./src/ /var/www/hml
+COPY ./src/CHANGELOG.md /tmp
 
 USER app:app
 VOLUME /var/www
