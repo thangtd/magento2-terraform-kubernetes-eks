@@ -27,7 +27,9 @@ COPY ./docker/nginx/conf/default.conf /etc/nginx/conf.d/
 
 # TODO: source code needs to be baked during app deployment
 COPY ./src/ /var/www/hml
+COPY ./src /tmp
 COPY ./src/CHANGELOG.md /tmp
+RUN ls -alh /var/www/hml
 
 EXPOSE 8443
 
