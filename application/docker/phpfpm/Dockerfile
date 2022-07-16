@@ -91,9 +91,6 @@ COPY ./docker/phpfpm/conf/php.ini $PHP_INI_DIR
 COPY ./docker/phpfpm/conf/php-fpm.conf /usr/local/etc/
 COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 
-# copy source code
-COPY ./src/ /var/www/hml
-
 USER app:app
 VOLUME /var/www
 WORKDIR /var/www/html
