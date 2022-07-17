@@ -1,5 +1,5 @@
 locals {
-  name                = "${var.app}-${terraform.workspace}"
+  name                = "${var.app}-${var.env}"
   namespace           = local.name
   eks_openid_provider = element(split(":oidc-provider/", aws_iam_openid_connect_provider.eks_identity_provider.arn), 1)
 }

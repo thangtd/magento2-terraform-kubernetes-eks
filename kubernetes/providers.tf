@@ -15,20 +15,30 @@ terraform {
   }
 }
 
+terraform {
+  cloud {
+    organization = "henrytrantdt"
+
+    workspaces {
+      name = "magento2-kubernetes"
+    }
+  }
+}
+
 data "aws_ssm_parameter" "m2_ssm_eks_cluster_name" {
-  name = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_cluster_name"
+  name = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_cluster_name"
 }
 
 data "aws_ssm_parameter" "m2_ssm_vpc_id" {
-  name = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_vpc_id"
+  name = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_vpc_id"
 }
 
 data "aws_ssm_parameter" "m2_ssm_private_subnets" {
-  name = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_private_subnets"
+  name = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_private_subnets"
 }
 
 data "aws_ssm_parameter" "m2_ssm_public_subnets" {
-  name = "/${var.org}/${var.division}/${var.app}/${terraform.workspace}/eks_public_subnets"
+  name = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_public_subnets"
 }
 
 data "aws_eks_cluster" "eks_cluster" {
@@ -45,7 +55,7 @@ provider "aws" {
   region = var.region
   default_tags {
     tags = {
-      Workspace = terraform.workspace
+      Workspace = var.env
       Tool      = "terraform"
     }
   }

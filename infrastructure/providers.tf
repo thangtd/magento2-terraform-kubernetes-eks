@@ -7,6 +7,16 @@ terraform {
   }
 }
 
+terraform {
+  cloud {
+    organization = "henrytrantdt"
+
+    workspaces {
+      name = "magento2-infrastructure"
+    }
+  }
+}
+
 # Configure the AWS Provider
 provider "aws" {
   region = var.region
