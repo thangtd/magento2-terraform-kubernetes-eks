@@ -1,3 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  ports:
+    - name: "8000"
+      port: 8000
+      targetPort: 8000
+    - name: "8443"
+      port: 8443
+      targetPort: 8443
+  selector:
+    io.kompose.service: app
+status:
+  loadBalancer: {}
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -41,9 +65,9 @@ spec:
             - mountPath: /sock
               name: sockdata
             - mountPath: /tmp/appdata
-              name: appdata              
+              name: appdata
       containers:
-        - image: henrytrantdt/magento-nginx:sha-4420051
+        - image: henrytrantdt/magento-nginx:sha-6285252
           name: app
           ports:
             - containerPort: 8000
@@ -56,7 +80,16 @@ spec:
             - mountPath: /sock
               name: sockdata
             - mountPath: /tmp/appdata
-              name: appdata                  
+              name: appdata
+            - mountPath: /var/www/html/auth.json
+              subPath: auth.json
+              name: composerauth
+            - mountPath: /var/www/html/app/etc/env.php
+              subPath: env.php
+              name: appenv
+            - mountPath: /var/www/html/app/etc/config.php
+              subPath: config.php
+              name: appconfig
       restartPolicy: Always
       volumes:
         - name: sockdata
@@ -64,7 +97,7 @@ spec:
             claimName: sockdata
         - name: appdata
           persistentVolumeClaim:
-            claimName: appdata            
+            claimName: appdata
         - name: ssldata
           configMap:
             defaultMode: 0400
@@ -74,3 +107,21 @@ spec:
                 path: nginx.crt
               - key: sslkey
                 path: nginx.key
+        - name: composerauth
+          configMap:
+            name: composerauth
+            items:
+              - key: auth
+                path: auth.json
+        - name: appconfig
+          configMap:
+            name: appconfig
+            items:
+              - key: config
+                path: config.php
+        - name: appenv
+          configMap:
+            name: appenv
+            items:
+              - key: env
+                path: env.php

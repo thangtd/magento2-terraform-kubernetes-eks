@@ -28,23 +28,22 @@ spec:
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
-        runAsGroup: 1000        
+        runAsGroup: 1000
       initContainers:
-      - name: init
-        image: alpine:3
-        command: ["/bin/sh", "-c"]
-        args:
-          - 
-            chown 1000:1000 /sock;
-            chown 1000:1000 /tmp/appdata;
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-          - mountPath: /sock
-            name: sockdata            
-          - mountPath: /tmp/appdata
-            name: appdata                
-      containers:      
+        - name: init
+          image: alpine:3
+          command: ["/bin/sh", "-c"]
+          args:
+            - chown 1000:1000 /sock;
+              chown 1000:1000 /tmp/appdata;
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /sock
+              name: sockdata
+            - mountPath: /tmp/appdata
+              name: appdata
+      containers:
         - env:
             - name: BLACKFIRE_CLIENT_ID
               valueFrom:
@@ -66,19 +65,46 @@ spec:
                 configMapKeyRef:
                   key: PHP_CS_FIXER_IGNORE_ENV
                   name: env-phpfpm-env
-          image: henrytrantdt/magento-phpfpm:sha-4420051
-          name: phpfpm         
+          image: henrytrantdt/magento-phpfpm:sha-6285252
+          name: phpfpm
           resources: {}
           volumeMounts:
             - mountPath: /sock
               name: sockdata
             - mountPath: /tmp/appdata
-              name: appdata                  
+              name: appdata
+            - mountPath: /var/www/html/auth.json
+              subPath: auth.json
+              name: composerauth
+            - mountPath: /var/www/html/app/etc/env.php
+              subPath: env.php
+              name: appenv
+            - mountPath: /var/www/html/app/etc/config.php
+              subPath: config.php
+              name: appconfig
       restartPolicy: Always
       volumes:
         - name: sockdata
           persistentVolumeClaim:
-            claimName: sockdata           
+            claimName: sockdata
         - name: appdata
           persistentVolumeClaim:
-            claimName: appdata                    
+            claimName: appdata
+        - name: composerauth
+          configMap:
+            name: composerauth
+            items:
+              - key: auth
+                path: auth.json
+        - name: appconfig
+          configMap:
+            name: appconfig
+            items:
+              - key: config
+                path: config.php
+        - name: appenv
+          configMap:
+            name: appenv
+            items:
+              - key: env
+                path: env.php
