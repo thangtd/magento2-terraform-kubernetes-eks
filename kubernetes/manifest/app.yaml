@@ -67,7 +67,9 @@ spec:
             - mountPath: /tmp/appdata
               name: appdata
       containers:
-        - image: henrytrantdt/magento-nginx:sha-6285252
+        # TODO: need to patch this image to use the correct tag
+        - image: henrytrantdt/magento-nginx:main
+          imagePullPolicy: Always
           name: app
           ports:
             - containerPort: 8000
