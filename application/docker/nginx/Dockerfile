@@ -1,3 +1,5 @@
+FROM henrytrantdt/magento-phpfpm:main as phpfpm
+
 FROM nginx:1.18-alpine
 
 ARG APP_ID=1000
@@ -24,9 +26,7 @@ RUN mkdir -p /etc/nginx/html /var/www/html
 COPY ./docker/nginx/conf/nginx.conf /etc/nginx/
 COPY ./docker/nginx/conf/default.conf /etc/nginx/conf.d/
 
-# TODO: source code needs to be baked during app deployment
-COPY ./src/ /var/www/html
-
+COPY --from=phpfpm /var/www/html /var/www/html
 RUN chown -R app:app /etc/nginx /var/www /var/cache/nginx /var/run/nginx.pid /sock
 
 USER app:app
