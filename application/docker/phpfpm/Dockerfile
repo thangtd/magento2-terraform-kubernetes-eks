@@ -96,10 +96,10 @@ COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 COPY ./src/ /var/www/html
 
 # TODO: mount secret does not work
-RUN --mount=type=secret,id=COMPOSER_PUBLIC_KEY \
-  --mount=type=secret,id=COMPOSER_PRIVATE_KEY \
-  export COMPOSER_PUBLIC_KEY_VAL=$(cat /run/secrets/COMPOSER_PUBLIC_KEY) \
-  && export COMPOSER_PRIVATE_KEY_VAL=$(cat /run/secrets/COMPOSER_PRIVATE_KEY)
+# RUN --mount=type=secret,id=COMPOSER_PUBLIC_KEY \
+#   --mount=type=secret,id=COMPOSER_PRIVATE_KEY \
+#   export COMPOSER_PUBLIC_KEY_VAL=$(cat /run/secrets/COMPOSER_PUBLIC_KEY) \
+#   && export COMPOSER_PRIVATE_KEY_VAL=$(cat /run/secrets/COMPOSER_PRIVATE_KEY)
 
 RUN cd /var/www/html/ \
   composer install --no-interaction \
