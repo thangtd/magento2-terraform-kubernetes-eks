@@ -95,17 +95,14 @@ COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 # TODO: baking source code should be done during app deployment
 COPY ./src/ /var/www/html
 
+# TODO: mount secret does not work
 RUN --mount=type=secret,id=COMPOSER_PUBLIC_KEY \
-  --mount=type=secret,id=COMPOSER_PRIVATE_KEY
-
-ARG COMPOSER_PUBLIC_KEY_VAL=$(cat /run/secrets/COMPOSER_PUBLIC_KEY)
-ARG COMPOSER_PRIVATE_KEY_VAL=$(cat /run/secrets/COMPOSER_PRIVATE_KEY)
+  --mount=type=secret,id=COMPOSER_PRIVATE_KEY \
+  export COMPOSER_PUBLIC_KEY_VAL=$(cat /run/secrets/COMPOSER_PUBLIC_KEY) \
+  && export COMPOSER_PRIVATE_KEY_VAL=$(cat /run/secrets/COMPOSER_PRIVATE_KEY)
 
 RUN cd /var/www/html/ \
-  && cp auth.json.sample auth.json \
-  && sed -i -e "s/<public-key>/$(COMPOSER_PUBLIC_KEY_VAL)/g" \
-  -e "s/<private-key>/$(COMPOSER_PRIVATE_KEY_VAL)/g" auth.json \
-  && composer install --no-interaction \
+  composer install --no-interaction \
   && rm -rf auth.json
 
 # set permissions
