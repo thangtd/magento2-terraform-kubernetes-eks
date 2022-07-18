@@ -106,16 +106,19 @@ resource "aws_subnet" "m2_private_subnet_2" {
 resource "aws_route_table" "m2_public_route_table" {
   vpc_id = aws_vpc.m2_vpc.id
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.m2_igw.id
-  }
-
-
   tags = {
     Name = "${local.name}-public-route-table"
   }
 }
+
+# add a new route to the route table
+
+resource "aws_route" "m2_public_route" {
+  route_table_id         = aws_route_table.m2_public_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.m2_igw.id
+}
+
 
 resource "aws_route_table_association" "public_subnet1_to_public_rt" {
   subnet_id      = aws_subnet.m2_public_subnet_1.id
@@ -140,17 +143,16 @@ resource "aws_route_table_association" "private_subnet2_to_private_rt" {
 resource "aws_route_table" "m2_private_route_table" {
   vpc_id = aws_vpc.m2_vpc.id
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.m2_nat_gateway.id
-  }
-
-
   tags = {
     Name = "${local.name}-private-route-table"
   }
 }
 
+resource "aws_route" "m2_private_route" {
+  route_table_id         = aws_route_table.m2_private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.m2_nat_gateway.id
+}
 
 ################################################################################
 # EKS Cluster
