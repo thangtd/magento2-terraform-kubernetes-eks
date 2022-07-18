@@ -1,5 +1,6 @@
 terraform.tfstate.backup
 */.terraform/*
+.terraform/*
 .terraform/modules/*
 .terraform.lock.hcl
 .terraform.tfstate.lock.info
