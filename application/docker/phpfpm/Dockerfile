@@ -10,77 +10,77 @@ RUN mkdir -p /etc/nginx/html /var/www/html /sock \
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
 RUN apt-get update && apt-get install -y \
-    cron \
-    default-mysql-client \
-    git \
-    gnupg \
-    gzip \
-    libbz2-dev \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libmagickwand-dev \
-    libmcrypt-dev \
-    libonig-dev \
-    libpng-dev \
-    libsodium-dev \
-    libssh2-1-dev \
-    libwebp-dev \
-    libxslt1-dev \
-    libzip-dev \
-    lsof \
-    mailutils \
-    msmtp \
-    nodejs \
-    procps \
-    vim \
-    zip \
+  cron \
+  default-mysql-client \
+  git \
+  gnupg \
+  gzip \
+  libbz2-dev \
+  libfreetype6-dev \
+  libicu-dev \
+  libjpeg62-turbo-dev \
+  libmagickwand-dev \
+  libmcrypt-dev \
+  libonig-dev \
+  libpng-dev \
+  libsodium-dev \
+  libssh2-1-dev \
+  libwebp-dev \
+  libxslt1-dev \
+  libzip-dev \
+  lsof \
+  mailutils \
+  msmtp \
+  nodejs \
+  procps \
+  vim \
+  zip \
   && rm -rf /var/lib/apt/lists/*
 
 RUN pecl channel-update pecl.php.net && pecl install \
-    imagick \
-    redis \
-    ssh2-1.3.1 \
-    xdebug \
+  imagick \
+  redis \
+  ssh2-1.3.1 \
+  xdebug \
   && pecl clear-cache \
   && rm -rf /tmp/pear
 
 RUN docker-php-ext-configure \
-    gd --with-freetype --with-jpeg --with-webp \
+  gd --with-freetype --with-jpeg --with-webp \
   && docker-php-ext-install \
-    bcmath \
-    bz2 \
-    calendar \
-    exif \
-    gd \
-    gettext \
-    intl \
-    mbstring \
-    mysqli \
-    opcache \
-    pcntl \
-    pdo_mysql \
-    soap \
-    sockets \
-    sodium \
-    sysvmsg \
-    sysvsem \
-    sysvshm \
-    xsl \
-    zip \
+  bcmath \
+  bz2 \
+  calendar \
+  exif \
+  gd \
+  gettext \
+  intl \
+  mbstring \
+  mysqli \
+  opcache \
+  pcntl \
+  pdo_mysql \
+  soap \
+  sockets \
+  sodium \
+  sysvmsg \
+  sysvsem \
+  sysvshm \
+  xsl \
+  zip \
   && docker-php-ext-enable \
-    imagick \
-    redis \
-    ssh2 \
-    xdebug
+  imagick \
+  redis \
+  ssh2 \
+  xdebug
 
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
-    && architecture=$(uname -m) \
-    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/$architecture/$version \
-    && mkdir -p /tmp/blackfire \
-    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
-    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
-    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+  && architecture=$(uname -m) \
+  && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/$architecture/$version \
+  && mkdir -p /tmp/blackfire \
+  && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
+  && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
+  && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 
 RUN curl -sS https://getcomposer.org/installer | \
   php -- --install-dir=/usr/local/bin --filename=composer
@@ -98,16 +98,24 @@ COPY ./src/ /var/www/html
 RUN --mount=type=secret,id=COMPOSER_PUBLIC_KEY \
   --mount=type=secret,id=COMPOSER_PRIVATE_KEY
 
-# RUN sed -i -e 's/<public-key>/$(cat /run/secrets/COMPOSER_PUBLIC_KEY)/g' -e 's/<private-key>/$(cat /run/secrets/COMPOSER_PRIVATE_KEY)/g' auth.json
+ARG COMPOSER_PUBLIC_KEY=$(cat /run/secrets/COMPOSER_PUBLIC_KEY)
+ARG COMPOSER_PRIVATE_KEY=$(cat /run/secrets/COMPOSER_PRIVATE_KEY)
 
-RUN composer install --no-interaction
+RUN composer config -a -g http-basic.repo.magento.com \
+  "$COMPOSER_PUBLIC_KEY" "$COMPOSER_PRIVATE_KEY" \
+  && composer install --no-interaction
+
+# RUN sed -i -e "s/<public-key>/$(COMPOSER_PUBLIC_KEY)/g" \
+#   -e "s/<private-key>/$(COMPOSER_PRIVATE_KEY)/g" auth.json \
+#   && composer install --no-interaction \
+#   && rm -rf auth.json
 
 # set permissions
 RUN cd /var/www/html/  \
-&& find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} + \
-&& find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} + \
-&& chown -R app:app . \
-&& chmod u+x bin/magento
+  && find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} + \
+  && find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} + \
+  && chown -R app:app . \
+  && chmod u+x bin/magento
 
 USER app:app
 

@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2.4.2
-      - name: Define docker meta for tags and labels
+      - name: Define docker meta for tags
         id: meta
         uses: docker/metadata-action@v4
         with:
@@ -47,7 +47,6 @@ jobs:
           file: ./application/docker/phpfpm/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
           secrets: |
             "COMPOSER_PUBLIC_KEY=${{ secrets.COMPOSER_PUBLIC_KEY }}"
             "COMPOSER_PRIVATE_KEY=${{ secrets.COMPOSER_PRIVATE_KEY }}"          
@@ -59,7 +58,7 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2.4.2
-      - name: Define docker meta for tags and labels
+      - name: Define docker meta for tags
         id: meta
         uses: docker/metadata-action@v4
         with:
@@ -91,6 +90,5 @@ jobs:
           file: ./application/docker/nginx/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-nginx:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-nginx:buildcache,mode=max          
