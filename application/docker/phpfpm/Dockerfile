@@ -95,6 +95,11 @@ COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 # TODO: baking source code should be done during app deployment
 COPY ./src/ /var/www/html
 
+RUN --mount=type=secret,id=COMPOSER_PUBLIC_KEY \
+  --mount=type=secret,id=COMPOSER_PRIVATE_KEY
+
+# RUN sed -i -e 's/<public-key>/$(cat /run/secrets/COMPOSER_PUBLIC_KEY)/g' -e 's/<private-key>/$(cat /run/secrets/COMPOSER_PRIVATE_KEY)/g' auth.json
+
 RUN composer install --no-interaction
 
 # set permissions
