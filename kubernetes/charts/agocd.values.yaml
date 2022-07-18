@@ -1,0 +1,17 @@
+redis-ha:
+  enabled: false
+# additionalApplications:  
+#   - name: magento2
+#     namespace: argocd
+#     finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+#     project: default
+#     source:
+#       repoURL: https://github.com/thangtd/magento2-terraform-kubernetes-eks.git
+#       targetRevision: HEAD
+#       path: kubernetes/manifest
+#       directory:
+#         recurse: true
+#     destination:
+#       server: https://kubernetes.default.svc
+#       namespace: default

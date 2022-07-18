@@ -77,7 +77,7 @@ variable "kube_version" {
 
 variable "ng_desired_size" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "ng_max_size" {

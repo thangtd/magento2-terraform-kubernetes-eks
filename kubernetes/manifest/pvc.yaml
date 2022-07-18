@@ -7,23 +7,23 @@ metadata:
   name: sockdata
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
-status: {}
+      storage: 200Mi
+  storageClassName: efs-sc
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: appdata
-  name: appdata
+    io.kompose.service: mediadata
+  name: mediadata
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
-status: {}
+  storageClassName: efs-sc

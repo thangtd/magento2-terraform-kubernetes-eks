@@ -168,9 +168,9 @@ resource "kubernetes_storage_class_v1" "efs_storage_class" {
   parameters = {
     "provisioningMode" = "efs-ap"
     "fileSystemId"     = aws_efs_file_system.efs_demo.id
-    "directoryPerms"   = "700"
-    "gidRangeStart"    = "1000"
-    "gidRangeEnd"      = "2000"
+    "directoryPerms"   = "755"
+    "uid"              = "1000"
+    "gid"              = "1000"
     "basePath"         = "/dynamic_provisioning"
   }
 
@@ -190,7 +190,7 @@ resource "kubernetes_persistent_volume_claim_v1" "efs_pvc_1" {
     storage_class_name = "efs-sc"
     resources {
       requests = {
-        storage = "5Gi"
+        storage = "100Mi"
       }
     }
 

@@ -4,7 +4,6 @@ terraform.tfstate.backup
 .terraform.lock.hcl
 .terraform.tfstate.lock.info
 terraform-on-aws-eks-main/*
-*/charts/*
 *.tfstate
 *.pem
 *.key
