@@ -101,14 +101,12 @@ RUN --mount=type=secret,id=COMPOSER_PUBLIC_KEY \
 ARG COMPOSER_PUBLIC_KEY=$(cat /run/secrets/COMPOSER_PUBLIC_KEY)
 ARG COMPOSER_PRIVATE_KEY=$(cat /run/secrets/COMPOSER_PRIVATE_KEY)
 
-RUN composer config -a -g http-basic.repo.magento.com \
-  "$COMPOSER_PUBLIC_KEY" "$COMPOSER_PRIVATE_KEY" \
-  && composer install --no-interaction
-
-# RUN sed -i -e "s/<public-key>/$(COMPOSER_PUBLIC_KEY)/g" \
-#   -e "s/<private-key>/$(COMPOSER_PRIVATE_KEY)/g" auth.json \
-#   && composer install --no-interaction \
-#   && rm -rf auth.json
+RUN cd /var/www/html/ \
+  && cp auth.json.sample auth.json \
+  && sed -i -e "s/<public-key>/$(COMPOSER_PUBLIC_KEY)/g" \
+  -e "s/<private-key>/$(COMPOSER_PRIVATE_KEY)/g" auth.json \
+  && composer install --no-interaction \
+  && rm -rf auth.json
 
 # set permissions
 RUN cd /var/www/html/  \
