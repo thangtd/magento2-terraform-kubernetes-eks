@@ -102,7 +102,7 @@ COPY ./src/ /var/www/html
 #   && export COMPOSER_PRIVATE_KEY_VAL=$(cat /run/secrets/COMPOSER_PRIVATE_KEY)
 
 RUN cd /var/www/html/ \
-  composer install --no-interaction \
+  && composer install --no-interaction \
   && rm -rf auth.json
 
 # set permissions
