@@ -118,12 +118,14 @@ spec:
         - name: appconfig
           configMap:
             name: appconfig
+            defaultMode: 0664
             items:
               - key: config
                 path: config.php
         - name: appenv
           configMap:
             name: appenv
+            defaultMode: 0664
             items:
               - key: env
                 path: env.php
