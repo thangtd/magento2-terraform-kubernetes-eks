@@ -55,14 +55,10 @@ variable "ng_ssh_key" {
   default = "terraform"
 }
 
-variable "ami_type" {
-  type    = string
-  default = "AL2_x86_64"
-}
-
 variable "instance_types" {
   type    = set(string)
-  default = ["t2.medium", "t3.medium"]
+  # default = ["t4g.medium", "t3a.medium", "t3.medium", "a1.large"]
+  default = ["t3a.medium", "t3.medium"]
 }
 
 variable "capacity_type" {
@@ -77,12 +73,12 @@ variable "kube_version" {
 
 variable "ng_desired_size" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "ng_max_size" {
   type    = number
-  default = 3
+  default = 5
 }
 
 variable "ng_min_size" {

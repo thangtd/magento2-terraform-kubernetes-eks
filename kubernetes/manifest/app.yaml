@@ -73,7 +73,13 @@ spec:
           ports:
             - containerPort: 8000
             - containerPort: 8443
-          resources: {}
+          resources: 
+            limits:
+              cpu: 1000m # 1CPU core
+              memory: 2Gi # 2GB of memory
+            requests:
+              cpu: 250m
+              memory: 500Mi          
           volumeMounts:
             - name: ssldata
               mountPath: /etc/nginx/certs

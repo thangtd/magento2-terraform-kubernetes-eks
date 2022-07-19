@@ -103,7 +103,13 @@ spec:
           name: db
           ports:
             - containerPort: 3306
-          resources: {}
+          resources: 
+            limits:
+              cpu: 1000m # 1CPU core
+              memory: 2Gi # 2GB of memory
+            requests:
+              cpu: 250m
+              memory: 500Mi    
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: dbdata

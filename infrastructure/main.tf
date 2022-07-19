@@ -218,7 +218,7 @@ resource "aws_eks_node_group" "eks_node_group" {
   #subnet_ids      = [aws_subnet.m2_private_subnet_1.id, aws_subnet.m2_private_subnet_2.id]
   subnet_ids = [aws_subnet.m2_public_subnet_1.id, aws_subnet.m2_public_subnet_2.id]
 
-  ami_type       = var.ami_type
+  ami_type       = "AL2_x86_64"
   instance_types = var.instance_types
   capacity_type  = var.capacity_type
 

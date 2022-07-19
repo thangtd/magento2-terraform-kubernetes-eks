@@ -57,9 +57,15 @@ spec:
               value: single-node
           image: markoshust/magento-elasticsearch:7.16-0
           name: elasticsearch
+          resources: 
+            limits:
+              cpu: 1000m # 1CPU core
+              memory: 2Gi # 2GB of memory
+            requests:
+              cpu: 250m
+              memory: 500Mi    
           ports:
             - containerPort: 9200
             - containerPort: 9300
-          resources: {}
       restartPolicy: Always
 status: {}
