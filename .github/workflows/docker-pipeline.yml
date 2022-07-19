@@ -30,7 +30,6 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=sha
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -43,6 +42,7 @@ jobs:
       - name: Build and push phpfpm
         uses: docker/build-push-action@v3
         with:
+          platforms: linux/amd64,linux/arm64
           context: ./application/
           file: ./application/docker/phpfpm/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
@@ -73,7 +73,6 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=sha
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx

@@ -100,10 +100,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c"]
-                args:
-                  - cp /var/www/env.php /var/www/html/app/etc/env.php 
-                    cp /var/www/config.php /var/www/html/app/etc/config.php               
+                command: ["/bin/sh", "-c", "cp /var/www/env.php /var/www/html/app/etc/env.php && cp /var/www/config.php /var/www/html/app/etc/config.php"]
         - name: phpfpm
           image: henrytrantdt/magento-phpfpm:main # TODO: need to patch this image to use the correct tag
           imagePullPolicy: Always
@@ -131,10 +128,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c"]
-                args:
-                  - cp /var/www/env.php /var/www/html/app/etc/env.php 
-                    cp /var/www/config.php /var/www/html/app/etc/config.php 
+                command: ["/bin/sh", "-c", "cp /var/www/env.php /var/www/html/app/etc/env.php && cp /var/www/config.php /var/www/html/app/etc/config.php"]
           env:
             - name: BLACKFIRE_CLIENT_ID
               valueFrom:
