@@ -1,6 +1,11 @@
 ################################################################################
 # EKS - OpenId Indentity Provider
 ################################################################################
+resource "kubernetes_namespace_v1" "monitoring-namespace" {
+  metadata {
+    name = "monitoring"
+  }
+}
 
 data "aws_eks_cluster" "m2_eks" {
   name = data.aws_ssm_parameter.m2_ssm_eks_cluster_name.value
