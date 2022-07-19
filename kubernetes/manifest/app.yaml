@@ -57,7 +57,7 @@ spec:
           image: alpine:3
           command: ["/bin/sh", "-c"]
           args:
-            - touch /var/www/test_chown.txt   
+            - touch /var/www/test_chown.txt
               chown 1000:1000 /var/www/test_chown.txt
           securityContext:
             runAsUser: 0
@@ -66,14 +66,14 @@ spec:
               name: sockdata
             - mountPath: /var/www/html/pub/media/catalog
               name: mediadata
-      containers:       
+      containers:
         - name: nginx
           image: henrytrantdt/magento-nginx:main # TODO: need to patch this image to use the correct tag
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
             - containerPort: 8443
-          resources: 
+          resources:
             limits:
               cpu: 200m # 1000m = 1CPU core
               memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
@@ -100,17 +100,22 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "cp /var/www/env.php /var/www/html/app/etc/env.php && cp /var/www/config.php /var/www/html/app/etc/config.php"]
+                command:
+                  [
+                    "/bin/sh",
+                    "-c",
+                    "cp /var/www/env.php /var/www/html/app/etc/env.php && cp /var/www/config.php /var/www/html/app/etc/config.php",
+                  ]
         - name: phpfpm
           image: henrytrantdt/magento-phpfpm:main # TODO: need to patch this image to use the correct tag
           imagePullPolicy: Always
-          resources: 
+          resources:
             limits:
-              cpu: 200m # 1000m = 1CPU core
-              memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
+              cpu: 400m # 1000m = 1CPU core
+              memory: 3200Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
-              cpu: 100m
-              memory: 800Mi
+              cpu: 200m
+              memory: 1600Mi
           volumeMounts:
             - mountPath: /sock
               name: sockdata
@@ -128,7 +133,12 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "cp /var/www/env.php /var/www/html/app/etc/env.php && cp /var/www/config.php /var/www/html/app/etc/config.php"]
+                command:
+                  [
+                    "/bin/sh",
+                    "-c",
+                    "cp /var/www/env.php /var/www/html/app/etc/env.php && cp /var/www/config.php /var/www/html/app/etc/config.php",
+                  ]
           env:
             - name: BLACKFIRE_CLIENT_ID
               valueFrom:
@@ -149,7 +159,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: PHP_CS_FIXER_IGNORE_ENV
-                  name: env-phpfpm-env                     
+                  name: env-phpfpm-env
       restartPolicy: Always
       volumes:
         - name: sockdata
@@ -169,20 +179,21 @@ spec:
         - name: composerauth
           configMap:
             name: composerauth
+            defaultMode: 0640
             items:
               - key: auth
                 path: auth.json
         - name: appconfig
           configMap:
             name: appconfig
-            defaultMode: 0644
+            defaultMode: 0640
             items:
               - key: config
                 path: config.php
         - name: appenv
           configMap:
             name: appenv
-            defaultMode: 0644
+            defaultMode: 0640
             items:
               - key: env
                 path: env.php
