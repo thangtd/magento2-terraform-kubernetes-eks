@@ -57,7 +57,7 @@ spec:
           image: alpine:3
           command: ["/bin/sh", "-c"]
           args:
-            - touch /var/www/html/pub/media/catalog/test_app.txt
+            - touch /var/www/html/pub/media/catalog/test_app.txt   
           securityContext:
             runAsUser: 0
           volumeMounts:
@@ -65,21 +65,20 @@ spec:
               name: sockdata
             - mountPath: /var/www/html/pub/media/catalog
               name: mediadata
-      containers:
-        # TODO: need to patch this image to use the correct tag
-        - image: henrytrantdt/magento-nginx:main
+      containers:       
+        - name: nginx
+          image: henrytrantdt/magento-nginx:main # TODO: need to patch this image to use the correct tag
           imagePullPolicy: Always
-          name: app
           ports:
             - containerPort: 8000
             - containerPort: 8443
           resources: 
             limits:
-              cpu: 1000m # 1CPU core
-              memory: 2Gi # 2GB of memory
+              cpu: 500m # 1000m = 1CPU core
+              memory: 1Gi # 1000Mi = 1Gi = 1GB of memory
             requests:
-              cpu: 500m
-              memory: 1Gi          
+              cpu: 250m
+              memory: 500Mi
           volumeMounts:
             - name: ssldata
               mountPath: /etc/nginx/certs
@@ -97,11 +96,55 @@ spec:
             - mountPath: /var/www/html/app/etc/config.php
               subPath: config.php
               name: appconfig
+        - name: phpfpm
+          image: henrytrantdt/magento-phpfpm:main # TODO: need to patch this image to use the correct tag
+          imagePullPolicy: Always
+          resources: 
+            limits:
+              cpu: 1000m # 1CPU core
+              memory: 2Gi # 2GB of memory
+            requests:
+              cpu: 500m
+              memory: 1Gi   
+          volumeMounts:
+            - mountPath: /sock
+              name: sockdata
+            - mountPath: /var/www/html/pub/media/catalog
+              name: mediadata
+            - mountPath: /var/www/html/auth.json
+              subPath: auth.json
+              name: composerauth
+            - mountPath: /var/www/html/app/etc/env.php
+              subPath: env.php
+              name: appenv
+            - mountPath: /var/www/html/app/etc/config.php
+              subPath: config.php
+              name: appconfig      
+          env:
+            - name: BLACKFIRE_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: BLACKFIRE_CLIENT_ID
+                  name: env-phpfpm-env
+            - name: BLACKFIRE_CLIENT_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  key: BLACKFIRE_CLIENT_TOKEN
+                  name: env-phpfpm-env
+            - name: COMPOSER_DISABLE_XDEBUG_WARN
+              valueFrom:
+                configMapKeyRef:
+                  key: COMPOSER_DISABLE_XDEBUG_WARN
+                  name: env-phpfpm-env
+            - name: PHP_CS_FIXER_IGNORE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  key: PHP_CS_FIXER_IGNORE_ENV
+                  name: env-phpfpm-env                     
       restartPolicy: Always
       volumes:
         - name: sockdata
-          persistentVolumeClaim:
-            claimName: sockdata
+          emptyDir: {}
         - name: mediadata
           persistentVolumeClaim:
             claimName: mediadata
@@ -123,14 +166,14 @@ spec:
         - name: appconfig
           configMap:
             name: appconfig
-            defaultMode: 0664
+            defaultMode: 0644
             items:
               - key: config
                 path: config.php
         - name: appenv
           configMap:
             name: appenv
-            defaultMode: 0664
+            defaultMode: 0644
             items:
               - key: env
                 path: env.php

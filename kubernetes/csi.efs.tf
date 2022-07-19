@@ -176,61 +176,6 @@ resource "kubernetes_storage_class_v1" "efs_storage_class" {
 
 }
 
-resource "kubernetes_persistent_volume_claim_v1" "efs_pvc_1" {
-
-  depends_on = [kubernetes_storage_class_v1.efs_storage_class]
-
-  wait_until_bound = false # can't depend on Pod to bound other wise got cycle error
-
-  metadata {
-    name = "efs-claim"
-  }
-  spec {
-    access_modes       = ["ReadWriteMany"]
-    storage_class_name = "efs-sc"
-    resources {
-      requests = {
-        storage = "100Mi"
-      }
-    }
-
-  }
-}
-
-
-resource "kubernetes_pod_v1" "efs-app" {
-
-  #depends_on = [kubernetes_persistent_volume_claim_v1.efs_pvc_1]
-
-  metadata {
-    name = "efs-app"
-  }
-
-  spec {
-    container {
-      image = "centos"
-      name  = "app"
-
-      command = ["/bin/sh"]
-      args    = ["-c", "while true; do echo $(date -u) >> /data/out; sleep 5; done"]
-
-      volume_mount {
-        name       = "persistent-storage"
-        mount_path = "/data"
-      }
-
-    }
-
-    volume {
-      name = "persistent-storage"
-      persistent_volume_claim {
-        claim_name = kubernetes_persistent_volume_claim_v1.efs_pvc_1.metadata.0.name
-      }
-    }
-
-  }
-}
-
 output "efs_csi_driver_role" {
   value = aws_iam_role.efs_csi_driver_role.arn
 }
