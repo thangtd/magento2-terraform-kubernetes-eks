@@ -57,7 +57,8 @@ spec:
           image: alpine:3
           command: ["/bin/sh", "-c"]
           args:
-            - touch /var/www/html/pub/media/catalog/test_app.txt   
+            - touch /var/www/test_chown.txt   
+              chown 1000:1000 /var/www/test_chown.txt
           securityContext:
             runAsUser: 0
           volumeMounts:
@@ -74,11 +75,11 @@ spec:
             - containerPort: 8443
           resources: 
             limits:
-              cpu: 500m # 1000m = 1CPU core
-              memory: 1Gi # 1000Mi = 1Gi = 1GB of memory
+              cpu: 200m # 1000m = 1CPU core
+              memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
-              cpu: 250m
-              memory: 500Mi
+              cpu: 100m
+              memory: 800Mi
           volumeMounts:
             - name: ssldata
               mountPath: /etc/nginx/certs
@@ -90,22 +91,29 @@ spec:
             - mountPath: /var/www/html/auth.json
               subPath: auth.json
               name: composerauth
-            - mountPath: /var/www/html/app/etc/env.php
+            - mountPath: /var/www/env.php
               subPath: env.php
               name: appenv
-            - mountPath: /var/www/html/app/etc/config.php
+            - mountPath: /var/www/config.php
               subPath: config.php
               name: appconfig
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c"]
+                args:
+                  - cp /var/www/env.php /var/www/html/app/etc/env.php 
+                    cp /var/www/config.php /var/www/html/app/etc/config.php               
         - name: phpfpm
           image: henrytrantdt/magento-phpfpm:main # TODO: need to patch this image to use the correct tag
           imagePullPolicy: Always
           resources: 
             limits:
-              cpu: 1000m # 1CPU core
-              memory: 2Gi # 2GB of memory
+              cpu: 200m # 1000m = 1CPU core
+              memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
-              cpu: 500m
-              memory: 1Gi   
+              cpu: 100m
+              memory: 800Mi
           volumeMounts:
             - mountPath: /sock
               name: sockdata
@@ -114,12 +122,19 @@ spec:
             - mountPath: /var/www/html/auth.json
               subPath: auth.json
               name: composerauth
-            - mountPath: /var/www/html/app/etc/env.php
+            - mountPath: /var/www/env.php
               subPath: env.php
               name: appenv
-            - mountPath: /var/www/html/app/etc/config.php
+            - mountPath: /var/www/config.php
               subPath: config.php
-              name: appconfig      
+              name: appconfig
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c"]
+                args:
+                  - cp /var/www/env.php /var/www/html/app/etc/env.php 
+                    cp /var/www/config.php /var/www/html/app/etc/config.php 
           env:
             - name: BLACKFIRE_CLIENT_ID
               valueFrom:

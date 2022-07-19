@@ -59,11 +59,11 @@ spec:
           name: elasticsearch
           resources: 
             limits:
-              cpu: 1000m # 1CPU core
-              memory: 2Gi # 2GB of memory
+              cpu: 400m # 1000m = 1CPU core
+              memory: 3200Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
-              cpu: 500m
-              memory: 1Gi   
+              cpu: 200m
+              memory: 1600Mi
           ports:
             - containerPort: 9200
             - containerPort: 9300

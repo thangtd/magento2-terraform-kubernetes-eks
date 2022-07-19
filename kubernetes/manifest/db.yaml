@@ -105,11 +105,11 @@ spec:
             - containerPort: 3306
           resources: 
             limits:
-              cpu: 1000m # 1CPU core
-              memory: 2Gi # 2GB of memory
+              cpu: 200m # 1000m = 1CPU core
+              memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
-              cpu: 500m
-              memory: 1Gi     
+              cpu: 100m
+              memory: 800Mi  
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: dbdata
