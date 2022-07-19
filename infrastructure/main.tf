@@ -213,12 +213,12 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy_attachment" {
 
 resource "aws_eks_node_group" "eks_node_group" {
   cluster_name    = aws_eks_cluster.m2_eks.name
-  node_group_name = "${local.cluster_name}-ng"
+  node_group_name = "${local.cluster_name}-memory-ng"
   node_role_arn   = aws_iam_role.eks_ng_iam_role.arn
   #subnet_ids      = [aws_subnet.m2_private_subnet_1.id, aws_subnet.m2_private_subnet_2.id]
   subnet_ids = [aws_subnet.m2_public_subnet_1.id, aws_subnet.m2_public_subnet_2.id]
 
-  ami_type       = "AL2_x86_64"
+  ami_type       = var.amitype
   instance_types = var.instance_types
   capacity_type  = var.capacity_type
 
