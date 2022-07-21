@@ -75,11 +75,11 @@ spec:
             - containerPort: 8443
           resources:
             limits:
-              cpu: 200m # 1000m = 1CPU core
+              cpu: 400m # 1000m = 1CPU core
               memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
               cpu: 100m
-              memory: 800Mi
+              memory: 400Mi
           volumeMounts:
             - name: ssldata
               mountPath: /etc/nginx/certs
@@ -112,10 +112,10 @@ spec:
           resources:
             limits:
               cpu: 400m # 1000m = 1CPU core
-              memory: 3200Mi # 1000Mi = 1Gi = 1GB of memory
+              memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
               cpu: 200m
-              memory: 1600Mi
+              memory: 800Mi
           volumeMounts:
             - mountPath: /sock
               name: sockdata
