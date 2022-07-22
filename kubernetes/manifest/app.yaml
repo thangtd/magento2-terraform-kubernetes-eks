@@ -64,7 +64,7 @@ spec:
           volumeMounts:
             - mountPath: /sock
               name: sockdata
-            - mountPath: /var/www/html/pub/media/catalog
+            - mountPath: /var/www/html/pub/media
               name: mediadata
       containers:
         - name: nginx
@@ -78,15 +78,15 @@ spec:
               cpu: 400m # 1000m = 1CPU core
               memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
-              cpu: 100m
-              memory: 400Mi
+              cpu: 200m
+              memory: 800Mi
           volumeMounts:
             - name: ssldata
               mountPath: /etc/nginx/certs
               readOnly: true
             - mountPath: /sock
               name: sockdata
-            - mountPath: /var/www/html/pub/media/catalog
+            - mountPath: /var/www/html/pub/media
               name: mediadata
             - mountPath: /var/www/html/auth.json
               subPath: auth.json
@@ -111,15 +111,15 @@ spec:
           imagePullPolicy: Always
           resources:
             limits:
-              cpu: 400m # 1000m = 1CPU core
-              memory: 1600Mi # 1000Mi = 1Gi = 1GB of memory
+              cpu: 1000m # 1000m = 1CPU core
+              memory: 4000Mi # 1000Mi = 1Gi = 1GB of memory
             requests:
-              cpu: 200m
-              memory: 800Mi
+              cpu: 500m
+              memory: 2000Mi
           volumeMounts:
             - mountPath: /sock
               name: sockdata
-            - mountPath: /var/www/html/pub/media/catalog
+            - mountPath: /var/www/html/pub/media
               name: mediadata
             - mountPath: /var/www/html/auth.json
               subPath: auth.json
@@ -215,13 +215,13 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50
+        averageUtilization: 80
   - type: Resource
     resource:
       name: memory
       target:
         type: Utilization
-        averageUtilization: 60
+        averageUtilization: 90
   behavior:
     scaleDown:
       stabilizationWindowSeconds: 300
@@ -233,9 +233,9 @@ spec:
       stabilizationWindowSeconds: 0
       policies:
       - type: Percent
-        value: 100
+        value: 50
         periodSeconds: 15
       - type: Pods
-        value: 4
+        value: 2
         periodSeconds: 15
       selectPolicy: Max        
