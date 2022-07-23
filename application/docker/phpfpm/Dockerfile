@@ -111,6 +111,13 @@ RUN cd /var/www/html/  \
   && chown -R app:app . \
   && chmod u+x bin/magento
 
+COPY ./docker/phpfpm/appconf/config.php /var/www/html/app/etc/config.php
+
+RUN cd /var/www/html/ \
+  && bin/magento module:enable --all -c \
+  && bin/magento setup:di:compile \
+  && bin/magento setup:static-content:deploy --force -s standard --jobs=5
+
 USER app:app
 
 VOLUME /var/www
