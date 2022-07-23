@@ -118,7 +118,6 @@ spec:
         - name: dbdata
           persistentVolumeClaim:
             claimName: dbdata
-status: {}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -132,5 +131,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
-status: {}
+      storage: 1Gi
