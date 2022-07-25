@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: composerauth
+    app: composerauth
   name: composerauth
 data:
   "auth": |
@@ -21,7 +21,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: appenv
+    app: appenv
   name: appenv
 data:
   "env": |
@@ -520,7 +520,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: appconfig
+    app: appconfig
   name: appconfig
 data:
   "config": |
@@ -5520,7 +5520,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: app-ssl-data
+    app: app-ssl-data
   name: ssldata
 data:
   sslcert: |
@@ -5591,7 +5591,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: db-env-db-env
+    app: db-env-db-env
   name: env-db-env
 ---
 apiVersion: v1
@@ -5604,7 +5604,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: phpfpm-env-phpfpm-env
+    app: phpfpm-env-phpfpm-env
   name: env-phpfpm-env
 ---
 apiVersion: v1
@@ -5620,5 +5620,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: rabbitmq-env-rabbitmq-env
+    app: rabbitmq-env-rabbitmq-env
   name: env-rabbitmq-env

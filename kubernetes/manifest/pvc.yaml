@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: sockdata
+    app: sockdata
   name: sockdata
 spec:
   accessModes:
@@ -18,7 +18,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: mediadata
+    app: mediadata
   name: mediadata
 spec:
   accessModes:

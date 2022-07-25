@@ -6,7 +6,7 @@ metadata:
     kompose.version: 1.26.1 (a9d05d509)
   creationTimestamp: null
   labels:
-    io.kompose.service: mailcatcher
+    app: mailcatcher
   name: mailcatcher
 spec:
   ports:
@@ -14,6 +14,6 @@ spec:
       port: 1080
       targetPort: 1080
   selector:
-    io.kompose.service: mailcatcher
+    app: mailcatcher
 status:
   loadBalancer: {}

@@ -6,7 +6,7 @@ metadata:
     kompose.version: 1.26.1 (a9d05d509)
   creationTimestamp: null
   labels:
-    io.kompose.service: phpmyadmin
+    app: phpmyadmin
   name: phpmyadmin
 spec:
   ports:
@@ -14,5 +14,5 @@ spec:
       port: 8080
       targetPort: 80
   selector:
-    io.kompose.service: phpmyadmin
+    app: phpmyadmin
   type: NodePort
