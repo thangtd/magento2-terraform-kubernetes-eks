@@ -82,8 +82,8 @@ resource "kubernetes_service_account_v1" "cluster_auto_scaling_sa" {
 }
 
 # add helm chart for cluster auto scaler 
-resource "helm_release" "cluster-autoscaler" {
-  name       = "aws-cluster-autoscaler-controller"
+resource "helm_release" "cluster_autoscaler" {
+  name       = "cluster-autoscaler"
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
   version    = "9.19.2"
@@ -91,7 +91,7 @@ resource "helm_release" "cluster-autoscaler" {
   namespace = "kube-system"
 
   cleanup_on_fail = true
-  force_update    = false  
+  force_update    = false
 
   values = [
     "${file("charts/cluster.autoscaler.values.yaml")}"

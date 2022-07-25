@@ -74,9 +74,9 @@ resource "helm_release" "efs_csi_driver" {
 
   name = "${local.name}-efs-csi-driver"
 
-  namespace = "kube-system"
+  namespace       = "kube-system"
   cleanup_on_fail = true
-  force_update    = false    
+  force_update    = false
 
   chart = "https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/download/helm-chart-aws-efs-csi-driver-2.2.7/aws-efs-csi-driver-2.2.7.tgz"
 
