@@ -1,3 +1,4 @@
+# reference: https://www.eksworkshop.com/advanced/310_servicemesh_with_istio/
 resource "kubernetes_namespace" "istio_system" {
   metadata {
     annotations = {
@@ -77,6 +78,11 @@ resource "helm_release" "istio_ingress_gateway" {
     name  = "labels.istio"
     value = "ingressgateway" # This is kind of a selector for the gateway.
   }
+
+  set {
+    name  = "labels.custom"
+    value = "ingress-gateway" # This is kind of a selector for the gateway.
+  }  
 
   depends_on = [helm_release.istio_istiod]
 
