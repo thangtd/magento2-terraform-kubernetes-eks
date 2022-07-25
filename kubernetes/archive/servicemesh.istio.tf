@@ -58,7 +58,7 @@ resource "helm_release" "istio_ingress_gateway" {
   name       = "istio-ingress-gateway"
   repository = "https://istio-release.storage.googleapis.com/charts"
   chart      = "gateway"
-  version   =  "1.14.2"
+  version    = "1.14.2"
 
   namespace       = kubernetes_namespace.istio_ingress.metadata.0.name
   cleanup_on_fail = true
@@ -82,7 +82,7 @@ resource "helm_release" "istio_ingress_gateway" {
   set {
     name  = "labels.custom"
     value = "ingress-gateway" # This is kind of a selector for the gateway.
-  }  
+  }
 
   depends_on = [helm_release.istio_istiod]
 

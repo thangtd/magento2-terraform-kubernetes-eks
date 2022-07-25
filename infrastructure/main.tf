@@ -287,4 +287,92 @@ resource "aws_iam_role_policy_attachment" "eks-ng-AmazonEC2ContainerRegistryRead
   role       = aws_iam_role.eks_ng_iam_role.name
 }
 
+################################################################################
+# EKS Fargate Profile
+################################################################################
 
+resource "aws_iam_role" "magento_eks_fargate_role" {
+  name = "magento-eks-fargate-role"
+
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "eks-fargate-pods.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "magento_eks_fargate_policy" {
+  name        = "magento-eks-fargate-policy"
+  path        = "/"
+  description = "magento-eks-fargate-policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "appmesh:StreamAggregatedResources",
+          "appmesh:*",
+          "xray:*"
+        ],
+        "Resource" : "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "acm:ExportCertificate",
+          "acm-pca:GetCertificateAuthorityCertificate"
+        ],
+        "Resource" : "*"
+      },
+      {
+        "Action" : [
+          "logs:*"
+        ],
+        "Effect" : "Allow",
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "magento_fargate_role_policy_attachment" {
+  policy_arn = aws_iam_policy.magento_eks_fargate_policy.arn
+  role       = aws_iam_role.magento_eks_fargate_role.name
+}
+
+resource "aws_eks_fargate_profile" "magento_fargate_profile" {
+
+  cluster_name           = aws_eks_cluster.m2_eks.name
+  fargate_profile_name   = "${local.cluster_name}-fargate-profile"
+  pod_execution_role_arn = aws_iam_role.magento_eks_fargate_role.arn
+
+  subnet_ids = [aws_subnet.m2_private_subnet_1.id, aws_subnet.m2_private_subnet_2.id]
+
+  selector {
+    namespace = "prodcatalog-ns"
+    labels = {
+      component = "fargate"
+      tier      = "worker"
+      app       = "prodcatalog"
+    }
+  }
+
+
+  selector {
+    namespace = "fargate-ns"
+    labels = {
+      place = "fargate"
+      tier  = "worker"
+    }
+  }
+
+}

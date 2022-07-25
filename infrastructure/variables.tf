@@ -56,9 +56,9 @@ variable "ng_ssh_key" {
 }
 
 variable "amitype" {
-  type    = string
+  type = string
   # default = "AL2_ARM_64"
-  
+
   default = "AL2_x86_64"
   # Valid values: AL2_x86_64 | AL2_x86_64_GPU | AL2_ARM_64 | CUSTOM | BOTTLEROCKET_ARM_64 | BOTTLEROCKET_x86_64
   # Need to build the docker image differently https://gist.github.com/foo4u/84926426bb9f56166cde4e40efc37b5e
@@ -70,7 +70,7 @@ variable "instance_types" {
   # default = ["t4g.medium","m6g.medium","r6g.medium", "r6gd.medium", "t4g.large"]
 
   # x86 architecture
-  default = ["t3a.medium","t3.medium","t2.medium"]
+  default = ["t3a.medium", "t3.medium", "t2.medium"]
 }
 
 variable "capacity_type" {

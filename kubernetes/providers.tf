@@ -12,6 +12,10 @@ terraform {
       source  = "hashicorp/helm"
       version = "~>2.6.0"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
+    }    
   }
 }
 
@@ -81,4 +85,13 @@ provider "helm" {
     #   command     = "aws"
     # }
   }
+}
+
+# kubectl manifest
+
+provider "kubectl" {
+  host                   = data.aws_eks_cluster.eks_cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks_cluster.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.eks_cluster_auth.token  
+  load_config_file       = false
 }
