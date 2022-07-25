@@ -5,6 +5,7 @@ metadata:
   labels:
     app: composerauth
   name: composerauth
+  namespace: magento-dev
 data:
   "auth": |
     {
@@ -23,6 +24,7 @@ metadata:
   labels:
     app: appenv
   name: appenv
+  namespace: magento-dev
 data:
   "env": |
     <?php
@@ -522,6 +524,7 @@ metadata:
   labels:
     app: appconfig
   name: appconfig
+  namespace: magento-dev
 data:
   "config": |
     <?php
@@ -5522,6 +5525,7 @@ metadata:
   labels:
     app: app-ssl-data
   name: ssldata
+  namespace: magento-dev
 data:
   sslcert: |
     -----BEGIN CERTIFICATE-----
@@ -5576,6 +5580,13 @@ data:
     -----END PRIVATE KEY-----
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app: db-env-db-env
+  name: env-db-env
+  namespace: magento-dev
 data:
   MYSQL_DATABASE: magento
   MYSQL_HOST: db
@@ -5587,27 +5598,30 @@ data:
   MYSQL_PASSWORD: magento
   MYSQL_ROOT_PASSWORD: magento
   MYSQL_USER: magento
-kind: ConfigMap
-metadata:
-  creationTimestamp: null
-  labels:
-    app: db-env-db-env
-  name: env-db-env
 ---
 apiVersion: v1
-data:
-  BLACKFIRE_CLIENT_ID: ""
-  BLACKFIRE_CLIENT_TOKEN: ""
-  COMPOSER_DISABLE_XDEBUG_WARN: "1"
-  PHP_CS_FIXER_IGNORE_ENV: "1"
 kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
     app: phpfpm-env-phpfpm-env
   name: env-phpfpm-env
+  namespace: magento-dev
+data:
+  BLACKFIRE_CLIENT_ID: ""
+  BLACKFIRE_CLIENT_TOKEN: ""
+  COMPOSER_DISABLE_XDEBUG_WARN: "1"
+  PHP_CS_FIXER_IGNORE_ENV: "1"
+
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app: rabbitmq-env-rabbitmq-env
+  name: env-rabbitmq-env
+  namespace: magento-dev
 data:
   RABBITMQ_DEFAULT_PASS: magento
   RABBITMQ_DEFAULT_USER: magento
@@ -5616,9 +5630,4 @@ data:
   RABBITMQ_HOST: rabbitmq
   RABBITMQ_MANAGEMENT_PORT: "15672"
   RABBITMQ_PORT: "5672"
-kind: ConfigMap
-metadata:
-  creationTimestamp: null
-  labels:
-    app: rabbitmq-env-rabbitmq-env
-  name: env-rabbitmq-env
+

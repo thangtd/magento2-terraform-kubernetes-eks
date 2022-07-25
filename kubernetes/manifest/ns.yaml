@@ -1,0 +1,8 @@
+# create a new namespace in kubernetes
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: magento-dev
+    istio-injection: enabled
+  name: magento-dev

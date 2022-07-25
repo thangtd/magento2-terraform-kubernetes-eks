@@ -5,6 +5,7 @@ metadata:
   labels:
     app: sockdata
   name: sockdata
+  namespace: magento-dev
 spec:
   accessModes:
     - ReadWriteMany
@@ -20,6 +21,7 @@ metadata:
   labels:
     app: mediadata
   name: mediadata
+  namespace: magento-dev
 spec:
   accessModes:
     - ReadWriteMany
@@ -27,3 +29,18 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: efs-sc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    app: dbdata
+  name: dbdata
+  namespace: magento-dev
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
