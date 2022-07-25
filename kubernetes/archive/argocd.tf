@@ -17,7 +17,9 @@ resource "helm_release" "helm_argo_cd" {
   version    = "4.9.8"
 
   namespace = kubernetes_namespace.argocd.metadata.0.name
-
+  cleanup_on_fail = true
+  force_update    = false  
+  
   values = [
     "${file("charts/agocd.values.yaml")}"
   ]

@@ -90,6 +90,9 @@ resource "helm_release" "cluster-autoscaler" {
 
   namespace = "kube-system"
 
+  cleanup_on_fail = true
+  force_update    = false  
+
   values = [
     "${file("charts/cluster.autoscaler.values.yaml")}"
   ]

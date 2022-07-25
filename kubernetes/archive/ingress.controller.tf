@@ -84,6 +84,8 @@ resource "helm_release" "aws-loadbalancer-controller-chart" {
   chart      = "aws-load-balancer-controller"
 
   namespace = "kube-system"
+  cleanup_on_fail = true
+  force_update    = false    
 
   set {
     name  = "clusterName"

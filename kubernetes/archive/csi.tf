@@ -59,7 +59,9 @@ resource "helm_release" "ebs_csi_driver" {
   repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
   chart      = "aws-ebs-csi-driver"
   namespace = "kube-system"     
-
+  cleanup_on_fail = true
+  force_update    = false  
+  
   set {
     name = "image.repository"
     value = "602401143452.dkr.ecr.ap-southeast-1.amazonaws.com/eks/aws-ebs-csi-driver"
