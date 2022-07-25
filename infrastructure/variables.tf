@@ -66,7 +66,7 @@ variable "amitype" {
 variable "instance_types" {
   type = set(string)
   # memory intensive work load
-  default = ["m6g.medium","r6g.medium", "r6gd.medium"]
+  default = ["t4g.medium","m6g.medium","r6g.medium", "r6gd.medium", "t4g.large"]
   # default = ["t3.medium"]
 }
 
