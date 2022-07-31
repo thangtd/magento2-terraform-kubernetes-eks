@@ -48,10 +48,9 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           secrets: |
-            "COMPOSER_PUBLIC_KEY=${{ secrets.COMPOSER_PUBLIC_KEY }}"
-            "COMPOSER_PRIVATE_KEY=${{ secrets.COMPOSER_PRIVATE_KEY }}"          
+            "COMPOSER_AUTH_JSON=${{ secrets.COMPOSER_AUTH_JSON }}"
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-phpfpm:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-phpfpm:buildcache,mode=max              
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-phpfpm:buildcache,mode=max
   build-magento-nginx-image:
     needs: build-magento-phpfpm-image
     runs-on: ubuntu-latest
@@ -91,4 +90,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-nginx:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-nginx:buildcache,mode=max          
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-nginx:buildcache,mode=max

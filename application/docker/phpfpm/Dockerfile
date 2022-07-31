@@ -1,3 +1,5 @@
+# syntax = docker/dockerfile:1.2
+
 FROM php:8.1-fpm-bullseye
 
 ARG APP_ID=1000
@@ -95,11 +97,7 @@ COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 # TODO: baking source code should be done during app deployment
 COPY ./src/ /var/www/html
 
-# TODO: mount secret does not work
-# RUN --mount=type=secret,id=COMPOSER_PUBLIC_KEY \
-#   --mount=type=secret,id=COMPOSER_PRIVATE_KEY \
-#   export COMPOSER_PUBLIC_KEY_VAL=$(cat /run/secrets/COMPOSER_PUBLIC_KEY) \
-#   && export COMPOSER_PRIVATE_KEY_VAL=$(cat /run/secrets/COMPOSER_PRIVATE_KEY)
+RUN --mount=type=secret,id=COMPOSER_AUTH_JSON,dst=/var/www/html/auth.json cat /var/www/html/auth.json
 
 RUN cd /var/www/html/ \
   && composer install --no-interaction
