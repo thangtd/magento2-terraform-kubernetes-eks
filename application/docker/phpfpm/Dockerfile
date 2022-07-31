@@ -97,7 +97,8 @@ COPY ./docker/phpfpm/conf/www.conf /usr/local/etc/php-fpm.d/
 # TODO: baking source code should be done during app deployment
 COPY ./src/ /var/www/html
 
-RUN --mount=type=secret,id=COMPOSER_AUTH_JSON,dst=/var/www/html/auth.json cat /var/www/html/auth.json
+RUN --mount=type=secret,id=COMPOSER_AUTH_JSON \
+  cat /run/secrets/COMPOSER_AUTH_JSON > /var/www/html/auth.json
 
 RUN cd /var/www/html/ \
   && composer install --no-interaction
