@@ -1,7 +1,6 @@
 terraform.tfstate.backup
 */.terraform/*
 .terraform/modules/*
-.terraform.lock.hcl
 .terraform.tfstate.lock.info
 terraform-on-aws-eks-main/*
 *.tfstate
