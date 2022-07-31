@@ -78,9 +78,6 @@ spec:
               name: sockdata
             - mountPath: /var/www/html/pub/media
               name: mediadata
-            - mountPath: /var/www/html/auth.json
-              subPath: auth.json
-              name: composerauth
             - mountPath: /var/www/env.php
               subPath: env.php
               name: appenv
@@ -117,9 +114,6 @@ spec:
               name: sockdata
             - mountPath: /var/www/html/pub/media
               name: mediadata
-            - mountPath: /var/www/html/auth.json
-              subPath: auth.json
-              name: composerauth
             - mountPath: /var/www/env.php
               subPath: env.php
               name: appenv
@@ -187,13 +181,6 @@ spec:
                 path: nginx.crt
               - key: sslkey
                 path: nginx.key
-        - name: composerauth
-          configMap:
-            name: composerauth
-            defaultMode: 0640
-            items:
-              - key: auth
-                path: auth.json
         - name: appconfig
           configMap:
             name: appconfig

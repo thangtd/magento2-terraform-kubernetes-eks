@@ -3,25 +3,6 @@ kind: ConfigMap
 metadata:
     creationTimestamp: null
     labels:
-        app: composerauth
-    name: composerauth
-    namespace: magento-dev
-data:
-    "auth": |
-        {
-          "http-basic": {
-              "repo.magento.com": {
-                  "username": "fd1a3ac856c74af3299f4e06fc4c9f6b",
-                  "password": "45e7f62790c8844801a6b7bc978efcfa"
-              }
-          }
-        }
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-    creationTimestamp: null
-    labels:
         app: appenv
     name: appenv
     namespace: magento-dev
