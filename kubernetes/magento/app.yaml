@@ -81,15 +81,19 @@ spec:
             - mountPath: /var/www/env.php
               subPath: env.php
               name: appenv
+              readOnly: true
             - mountPath: /var/www/config.php
               subPath: config.php
               name: appconfig
+              readOnly: true
             - name: nginx-conf
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
+              readOnly: true
             - name: nginx-conf
               mountPath: /etc/nginx/conf.d/default.conf
-              subPath: default.conf         
+              subPath: default.conf
+              readOnly: true
           lifecycle:
             postStart:
               exec:
@@ -117,24 +121,31 @@ spec:
             - mountPath: /var/www/env.php
               subPath: env.php
               name: appenv
+              readOnly: true
             - mountPath: /var/www/config.php
               subPath: config.php
               name: appconfig
+              readOnly: true
             - name: phpfpm-conf
               subPath: blackfire.ini
               mountPath: /usr/local/etc/php/conf.d/blackfire.ini    
+              readOnly: true
             - name: phpfpm-conf
               subPath: msmtprc
               mountPath: /etc/msmtprc
+              readOnly: true
             - name: phpfpm-conf
               subPath: php.ini
               mountPath: /usr/local/etc/php/php.ini      
+              readOnly: true
             - name: phpfpm-conf
               subPath: php-fpm.conf
               mountPath: /usr/local/etc/php-fpm.conf
+              readOnly: true
             - name: phpfpm-conf
               subPath: www.conf
-              mountPath: /usr/local/etc/php-fpm.d/www.conf                                                 
+              mountPath: /usr/local/etc/php-fpm.d/www.conf           
+              readOnly: true                                      
           lifecycle:
             postStart:
               exec:
