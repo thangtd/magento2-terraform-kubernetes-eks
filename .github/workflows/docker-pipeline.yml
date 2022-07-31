@@ -42,7 +42,7 @@ jobs:
       - name: Build and push phpfpm
         uses: docker/build-push-action@v3
         with:
-          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64,linux/arm64
           context: ./application/
           file: ./application/docker/phpfpm/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
@@ -85,7 +85,7 @@ jobs:
       - name: Build and push nginx
         uses: docker/build-push-action@v3
         with:
-          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64,linux/arm64
           context: ./application/
           file: ./application/docker/nginx/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
