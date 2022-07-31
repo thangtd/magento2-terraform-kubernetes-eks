@@ -85,7 +85,7 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
 RUN curl -sS https://getcomposer.org/installer | \
   php -- --install-dir=/usr/local/bin --filename=composer
 
-# TODO: should be replaced by k8s configmap
+# Still need these config files for build and test purpose
 COPY ./docker/phpfpm/conf/blackfire.ini $PHP_INI_DIR/conf.d/blackfire.ini
 COPY ./docker/phpfpm/conf/msmtprc /etc/msmtprc
 COPY ./docker/phpfpm/conf/php.ini $PHP_INI_DIR

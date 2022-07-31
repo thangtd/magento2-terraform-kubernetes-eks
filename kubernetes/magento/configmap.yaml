@@ -5766,7 +5766,7 @@ data:
         xdebug.client_host = host.docker.internal
         xdebug.idekey = PHPSTORM
 
-        upload_max_filesize = 100M
+        upload_max_filesize = 50M
         post_max_size = 100M
         max_input_vars = 10000
 

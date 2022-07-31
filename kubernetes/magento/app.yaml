@@ -126,6 +126,21 @@ spec:
             - mountPath: /var/www/config.php
               subPath: config.php
               name: appconfig
+            - name: phpfpm-conf
+              subPath: blackfire.ini
+              mountPath: /usr/local/etc/php/conf.d/blackfire.ini    
+            - name: phpfpm-conf
+              subPath: msmtprc
+              mountPath: /etc/msmtprc
+            - name: phpfpm-conf
+              subPath: php.ini
+              mountPath: /usr/local/etc/php/php.ini      
+            - name: phpfpm-conf
+              subPath: php-fpm.conf
+              mountPath: /usr/local/etc/php-fpm.conf
+            - name: phpfpm-conf
+              subPath: www.conf
+              mountPath: /usr/local/etc/php-fpm.d/www.conf                                                 
           lifecycle:
             postStart:
               exec:
@@ -202,6 +217,21 @@ spec:
                 path: default.conf
               - key: nginx.conf
                 path: nginx.conf
+        - name: phpfpm-conf
+          configMap:
+            name: phpfpm-conf
+            defaultMode: 0640
+            items:
+              - key: blackfire.ini
+                path: blackfire.ini
+              - key: msmtprc
+                path: msmtprc
+              - key: php-fpm.conf
+                path: php-fpm.conf
+              - key: php.ini
+                path: php.ini
+              - key: www.conf
+                path: www.conf
 ---
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
