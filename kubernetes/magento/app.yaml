@@ -1,10 +1,6 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.26.1 (a9d05d509)
-  creationTimestamp: null
   labels:
     app: magento
   name: app
@@ -26,10 +22,6 @@ status:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.26.1 (a9d05d509)
-  creationTimestamp: null
   labels:
     app: magento
   name: app
@@ -43,10 +35,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.26.1 (a9d05d509)
-      creationTimestamp: null
       labels:
         app: magento
     spec:
@@ -99,6 +87,12 @@ spec:
             - mountPath: /var/www/config.php
               subPath: config.php
               name: appconfig
+            - name: nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf         
           lifecycle:
             postStart:
               exec:
@@ -199,6 +193,15 @@ spec:
             items:
               - key: env
                 path: env.php
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            defaultMode: 0640
+            items:
+              - key: default.conf
+                path: default.conf
+              - key: nginx.conf
+                path: nginx.conf
 ---
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
@@ -213,32 +216,32 @@ spec:
   minReplicas: 1
   maxReplicas: 1
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 80
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 90
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 90
   behavior:
     scaleDown:
       stabilizationWindowSeconds: 300
       policies:
-      - type: Percent
-        value: 50
-        periodSeconds: 15
+        - type: Percent
+          value: 50
+          periodSeconds: 15
     scaleUp:
       stabilizationWindowSeconds: 0
       policies:
-      - type: Percent
-        value: 50
-        periodSeconds: 15
-      - type: Pods
-        value: 2
-        periodSeconds: 15
-      selectPolicy: Max        
+        - type: Percent
+          value: 50
+          periodSeconds: 15
+        - type: Pods
+          value: 2
+          periodSeconds: 15
+      selectPolicy: Max
