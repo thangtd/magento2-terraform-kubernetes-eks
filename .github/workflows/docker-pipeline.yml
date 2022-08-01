@@ -43,8 +43,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           # platforms: linux/amd64,linux/arm64
-          context: ./application/
-          file: ./application/docker/phpfpm/Dockerfile
+          context: ./magento-application/
+          file: ./magento-application/docker/phpfpm/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           secrets: |
@@ -85,8 +85,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           # platforms: linux/amd64,linux/arm64
-          context: ./application/
-          file: ./application/docker/nginx/Dockerfile
+          context: ./magento-application/
+          file: ./magento-application/docker/nginx/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/magento-nginx:buildcache
