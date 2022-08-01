@@ -1,11 +1,12 @@
+**/.terraform/*
 terraform.tfstate.backup
-*/.terraform/*
-.terraform/modules/*
 .terraform.tfstate.lock.info
 terraform-on-aws-eks-main/*
 *.tfstate
 *.pem
 *.key
 *.tfplan
+*.bak
+*.backup
 references/*
 .vscode/*

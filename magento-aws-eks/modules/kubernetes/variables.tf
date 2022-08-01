@@ -49,6 +49,11 @@ variable "efs-csi-controller-sa" {
   default = "efs-csi-controller-sa"
 }
 
+variable "service-account-read-secrets" {
+  type    = string
+  default = "service-account-read-secrets"
+}
+
 variable "amazon-cloudwatch-sa" {
   type    = string
   default = "amazon-cloudwatch"
