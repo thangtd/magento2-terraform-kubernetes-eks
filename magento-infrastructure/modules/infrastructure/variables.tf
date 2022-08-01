@@ -1,99 +1,102 @@
-locals {
-  name         = "${var.org}-${var.division}-${var.app}-${var.env}"
-  cluster_name = "${local.name}-eks"
-  common_tags = {
-    Org = var.org
-    Env = var.env
-    Div = var.division
-    App = var.app
-  }
-
-}
-
 variable "region" {
+  description = "AWS Region Name"
   type    = string
-  default = "ap-southeast-1"
+  default = ""
 }
 
 variable "bastion_ami" {
+  description = "AMI ID of the bastion host"
   type    = string
-  default = "ami-0c802847a7dd848c0"
+  default = ""
 }
 
 variable "org" {
+  description = "Organization Name"
   type    = string
-  default = "org"
+  default = ""
 }
 
 variable "division" {
+  description = "Division Name"
   type    = string
-  default = "devops"
+  default = ""
 }
 
 variable "app" {
+  description = "Application Name"
   type    = string
-  default = "m2"
+  default = ""
 }
 
 variable "env" {
+  description = "Environment Name"
   type    = string
-  default = "dev"
+  default = ""
 }
 
 variable "vpc_cidr" {
+  description = "VPC CIDR"
   type    = string
-  default = "10.0.0.0/16"
+  default = ""
 }
 
 variable "bastion_ssh_key" {
+  description = "SSH Key Name for the bastion host"
   type    = string
-  default = "terraform"
+  default = ""
 }
 
 variable "ng_ssh_key" {
+  description = "SSH Key Name for the EKS Node Group"
   type    = string
-  default = "terraform"
+  default = ""
 }
 
 variable "amitype" {
-  type = string
-  # default = "AL2_ARM_64"
-
-  default = "AL2_x86_64"
   # Valid values: AL2_x86_64 | AL2_x86_64_GPU | AL2_ARM_64 | CUSTOM | BOTTLEROCKET_ARM_64 | BOTTLEROCKET_x86_64
-  # Need to build the docker image differently https://gist.github.com/foo4u/84926426bb9f56166cde4e40efc37b5e
+  description = "AMI Type of EKS Node Group"
+  type = string
+  default = "AL2_x86_64"  
 }
 
 variable "instance_types" {
+  description = "Instance Types of EKS Node Group"
   type = set(string)
-  # ARM architecture
-  # default = ["t4g.medium","m6g.medium","r6g.medium", "r6gd.medium", "t4g.large"]
-
-  # x86 architecture
-  default = ["t3a.medium", "t3.medium", "t2.medium"]
+  default = []
 }
 
 variable "capacity_type" {
+  description = "Capacity Type of EKS Node Group"
   type    = string
-  default = "SPOT"
+  default = ""
 }
 
 variable "kube_version" {
+  description = "Kubernetes Version"
   type    = string
   default = "1.21"
 }
 
 variable "ng_desired_size" {
+  description = "Desired Size of the EKS Node Group"
   type    = number
-  default = 1
+  default = 0
 }
 
 variable "ng_max_size" {
+  description = "Max Size of the EKS Node Group"
   type    = number
   default = 5
 }
 
 variable "ng_min_size" {
+  description = "Min Size of the EKS Node Group"
   type    = number
-  default = 1
+  default = 0
+}
+
+variable "labels" {
+  description = "A map of labels to apply to contained resources."
+  type        = map(string)
+  default     = {}  
 }

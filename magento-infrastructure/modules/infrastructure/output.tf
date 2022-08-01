@@ -41,12 +41,6 @@ resource "aws_ssm_parameter" "m2_ssm_eks_cluster_name" {
   value = aws_eks_cluster.m2_eks.id
 }
 
-resource "aws_ssm_parameter" "m2_ssm_eks_cluster_region" {
-  name  = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_cluster_region"
-  type  = "String"
-  value = var.region
-}
-
 resource "aws_ssm_parameter" "m2_ssm_vpc_id" {
   name  = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_vpc_id"
   type  = "String"
