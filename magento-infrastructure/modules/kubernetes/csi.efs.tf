@@ -144,8 +144,8 @@ resource "aws_security_group" "efs_sg" {
 
 resource "aws_efs_mount_target" "efs_mount_to_private_subnets" {
 
-  #for_each  = toset(split(",", nonsensitive(data.aws_ssm_parameter.m2_ssm_private_subnets.value)))
-  for_each  = toset(split(",", nonsensitive(data.aws_ssm_parameter.m2_ssm_public_subnets.value)))
+  #for_each  = toset(split(",", nonsensitive(data.aws_ssm_parameter.magento_ssm_private_subnets.value)))
+  for_each  = toset(split(",", nonsensitive(data.aws_ssm_parameter.magento_ssm_public_subnets.value)))
   subnet_id = each.value
 
   file_system_id = aws_efs_file_system.efs_demo.id

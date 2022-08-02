@@ -29,28 +29,28 @@ terraform {
   }
 }
 
-data "aws_ssm_parameter" "m2_ssm_eks_cluster_name" {
+data "aws_ssm_parameter" "magento_ssm_eks_cluster_name" {
   name = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_cluster_name"
 }
 
-data "aws_ssm_parameter" "m2_ssm_vpc_id" {
+data "aws_ssm_parameter" "magento_ssm_vpc_id" {
   name = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_vpc_id"
 }
 
-data "aws_ssm_parameter" "m2_ssm_private_subnets" {
+data "aws_ssm_parameter" "magento_ssm_private_subnets" {
   name = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_private_subnets"
 }
 
-data "aws_ssm_parameter" "m2_ssm_public_subnets" {
+data "aws_ssm_parameter" "magento_ssm_public_subnets" {
   name = "/${var.org}/${var.division}/${var.app}/${var.env}/eks_public_subnets"
 }
 
 data "aws_eks_cluster" "eks_cluster" {
-  name = data.aws_ssm_parameter.m2_ssm_eks_cluster_name.value
+  name = data.aws_ssm_parameter.magento_ssm_eks_cluster_name.value
 }
 
 data "aws_eks_cluster_auth" "eks_cluster_auth" {
-  name = data.aws_ssm_parameter.m2_ssm_eks_cluster_name.value
+  name = data.aws_ssm_parameter.magento_ssm_eks_cluster_name.value
 }
 
 

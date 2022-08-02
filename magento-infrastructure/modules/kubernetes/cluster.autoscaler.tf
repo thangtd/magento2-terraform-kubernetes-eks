@@ -99,7 +99,7 @@ resource "helm_release" "cluster_autoscaler" {
 
   set {
     name  = "autoDiscovery.clusterName"
-    value = data.aws_ssm_parameter.m2_ssm_eks_cluster_name.value
+    value = data.aws_ssm_parameter.magento_ssm_eks_cluster_name.value
   }
 
   set {

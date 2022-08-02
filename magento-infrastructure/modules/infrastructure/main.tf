@@ -23,7 +23,7 @@ data "aws_availability_zones" "az" {
   state = "available"
 }
 
-resource "aws_vpc" "m2_vpc" {
+resource "aws_vpc" "magento_vpc" {
   cidr_block       = var.vpc_cidr
   instance_tenancy = "default"
 
@@ -39,21 +39,21 @@ resource "aws_vpc" "m2_vpc" {
 
 }
 
-resource "aws_internet_gateway" "m2_igw" {
-  vpc_id = aws_vpc.m2_vpc.id
+resource "aws_internet_gateway" "magento_igw" {
+  vpc_id = aws_vpc.magento_vpc.id
 
   tags = {
     Name = "${local.name}-igw"
   }
 }
 
-resource "aws_eip" "m2_eip_for_natgw" {
+resource "aws_eip" "magento_eip_for_natgw" {
   vpc = true
 }
 
-resource "aws_nat_gateway" "m2_nat_gateway" {
-  allocation_id = aws_eip.m2_eip_for_natgw.id
-  subnet_id     = aws_subnet.m2_public_subnet_1.id
+resource "aws_nat_gateway" "magento_nat_gateway" {
+  allocation_id = aws_eip.magento_eip_for_natgw.id
+  subnet_id     = aws_subnet.magento_public_subnet_1.id
 
   tags = merge(
     local.common_tags,
@@ -64,11 +64,11 @@ resource "aws_nat_gateway" "m2_nat_gateway" {
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
   # on the Internet Gateway for the VPC.
-  depends_on = [aws_internet_gateway.m2_igw]
+  depends_on = [aws_internet_gateway.magento_igw]
 }
 
-resource "aws_subnet" "m2_public_subnet_1" {
-  vpc_id     = aws_vpc.m2_vpc.id
+resource "aws_subnet" "magento_public_subnet_1" {
+  vpc_id     = aws_vpc.magento_vpc.id
   cidr_block = "10.0.0.0/24"
 
   availability_zone       = data.aws_availability_zones.az.names[0]
@@ -81,8 +81,8 @@ resource "aws_subnet" "m2_public_subnet_1" {
   }
 }
 
-resource "aws_subnet" "m2_public_subnet_2" {
-  vpc_id     = aws_vpc.m2_vpc.id
+resource "aws_subnet" "magento_public_subnet_2" {
+  vpc_id     = aws_vpc.magento_vpc.id
   cidr_block = "10.0.1.0/24"
 
   availability_zone       = data.aws_availability_zones.az.names[1]
@@ -95,8 +95,8 @@ resource "aws_subnet" "m2_public_subnet_2" {
   }
 }
 
-resource "aws_subnet" "m2_private_subnet_1" {
-  vpc_id     = aws_vpc.m2_vpc.id
+resource "aws_subnet" "magento_private_subnet_1" {
+  vpc_id     = aws_vpc.magento_vpc.id
   cidr_block = "10.0.2.0/24"
 
   availability_zone = data.aws_availability_zones.az.names[0]
@@ -108,8 +108,8 @@ resource "aws_subnet" "m2_private_subnet_1" {
   }
 }
 
-resource "aws_subnet" "m2_private_subnet_2" {
-  vpc_id     = aws_vpc.m2_vpc.id
+resource "aws_subnet" "magento_private_subnet_2" {
+  vpc_id     = aws_vpc.magento_vpc.id
   cidr_block = "10.0.3.0/24"
 
   availability_zone = data.aws_availability_zones.az.names[1]
@@ -121,8 +121,8 @@ resource "aws_subnet" "m2_private_subnet_2" {
   }
 }
 
-resource "aws_route_table" "m2_public_route_table" {
-  vpc_id = aws_vpc.m2_vpc.id
+resource "aws_route_table" "magento_public_route_table" {
+  vpc_id = aws_vpc.magento_vpc.id
 
   tags = {
     Name = "${local.name}-public-route-table"
@@ -131,52 +131,52 @@ resource "aws_route_table" "m2_public_route_table" {
 
 # add a new route to the route table
 
-resource "aws_route" "m2_public_route" {
-  route_table_id         = aws_route_table.m2_public_route_table.id
+resource "aws_route" "magento_public_route" {
+  route_table_id         = aws_route_table.magento_public_route_table.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.m2_igw.id
+  gateway_id             = aws_internet_gateway.magento_igw.id
 }
 
 
 resource "aws_route_table_association" "public_subnet1_to_public_rt" {
-  subnet_id      = aws_subnet.m2_public_subnet_1.id
-  route_table_id = aws_route_table.m2_public_route_table.id
+  subnet_id      = aws_subnet.magento_public_subnet_1.id
+  route_table_id = aws_route_table.magento_public_route_table.id
 }
 
 resource "aws_route_table_association" "public_subnet2_to_public_rt" {
-  subnet_id      = aws_subnet.m2_public_subnet_2.id
-  route_table_id = aws_route_table.m2_public_route_table.id
+  subnet_id      = aws_subnet.magento_public_subnet_2.id
+  route_table_id = aws_route_table.magento_public_route_table.id
 }
 
 resource "aws_route_table_association" "private_subnet1_to_private_rt" {
-  subnet_id      = aws_subnet.m2_private_subnet_1.id
-  route_table_id = aws_route_table.m2_private_route_table.id
+  subnet_id      = aws_subnet.magento_private_subnet_1.id
+  route_table_id = aws_route_table.magento_private_route_table.id
 }
 
 resource "aws_route_table_association" "private_subnet2_to_private_rt" {
-  subnet_id      = aws_subnet.m2_private_subnet_2.id
-  route_table_id = aws_route_table.m2_private_route_table.id
+  subnet_id      = aws_subnet.magento_private_subnet_2.id
+  route_table_id = aws_route_table.magento_private_route_table.id
 }
 
-resource "aws_route_table" "m2_private_route_table" {
-  vpc_id = aws_vpc.m2_vpc.id
+resource "aws_route_table" "magento_private_route_table" {
+  vpc_id = aws_vpc.magento_vpc.id
 
   tags = {
     Name = "${local.name}-private-route-table"
   }
 }
 
-resource "aws_route" "m2_private_route" {
-  route_table_id         = aws_route_table.m2_private_route_table.id
+resource "aws_route" "magento_private_route" {
+  route_table_id         = aws_route_table.magento_private_route_table.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.m2_nat_gateway.id
+  nat_gateway_id         = aws_nat_gateway.magento_nat_gateway.id
 }
 
 ################################################################################
 # EKS Cluster
 ################################################################################
 
-resource "aws_eks_cluster" "m2_eks" {
+resource "aws_eks_cluster" "magento_eks" {
   name     = local.cluster_name
   role_arn = aws_iam_role.eks_iam_role.arn
 
@@ -185,14 +185,14 @@ resource "aws_eks_cluster" "m2_eks" {
   #enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   vpc_config {
-    subnet_ids = [aws_subnet.m2_private_subnet_1.id, aws_subnet.m2_private_subnet_2.id]
+    subnet_ids = [aws_subnet.magento_private_subnet_1.id, aws_subnet.magento_private_subnet_2.id]
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
   # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
   depends_on = [
     aws_iam_role_policy_attachment.eks_cluster_policy_attachment,
-    aws_vpc.m2_vpc
+    aws_vpc.magento_vpc
   ]
 
   tags = local.common_tags
@@ -230,11 +230,11 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy_attachment" {
 ################################################################################
 
 resource "aws_eks_node_group" "eks_node_group" {
-  cluster_name    = aws_eks_cluster.m2_eks.name
+  cluster_name    = aws_eks_cluster.magento_eks.name
   node_group_name = "${local.cluster_name}-memory-ng"
   node_role_arn   = aws_iam_role.eks_ng_iam_role.arn
-  #subnet_ids      = [aws_subnet.m2_private_subnet_1.id, aws_subnet.m2_private_subnet_2.id]
-  subnet_ids = [aws_subnet.m2_public_subnet_1.id, aws_subnet.m2_public_subnet_2.id]
+  #subnet_ids      = [aws_subnet.magento_private_subnet_1.id, aws_subnet.magento_private_subnet_2.id]
+  subnet_ids = [aws_subnet.magento_public_subnet_1.id, aws_subnet.magento_public_subnet_2.id]
 
   ami_type       = var.amitype
   instance_types = var.instance_types
@@ -242,7 +242,7 @@ resource "aws_eks_node_group" "eks_node_group" {
 
   remote_access {
     ec2_ssh_key = var.ng_ssh_key
-    #source_security_group_ids = [aws_security_group.m2_bastion_sg.id]
+    #source_security_group_ids = [aws_security_group.magento_bastion_sg.id]
   }
 
   scaling_config {
@@ -261,8 +261,8 @@ resource "aws_eks_node_group" "eks_node_group" {
     aws_iam_role_policy_attachment.eks-ng-AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.eks-ng-AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.eks-ng-AmazonEC2ContainerRegistryReadOnly,
-    aws_vpc.m2_vpc,
-    aws_eks_cluster.m2_eks
+    aws_vpc.magento_vpc,
+    aws_eks_cluster.magento_eks
   ]
 
   tags = merge(
@@ -369,11 +369,11 @@ resource "aws_iam_role_policy_attachment" "magento_fargate_role_policy_attachmen
 
 resource "aws_eks_fargate_profile" "magento_fargate_profile" {
 
-  cluster_name           = aws_eks_cluster.m2_eks.name
+  cluster_name           = aws_eks_cluster.magento_eks.name
   fargate_profile_name   = "${local.cluster_name}-fargate-profile"
   pod_execution_role_arn = aws_iam_role.magento_eks_fargate_role.arn
 
-  subnet_ids = [aws_subnet.m2_private_subnet_1.id, aws_subnet.m2_private_subnet_2.id]
+  subnet_ids = [aws_subnet.magento_private_subnet_1.id, aws_subnet.magento_private_subnet_2.id]
 
   selector {
     namespace = "prodcatalog-ns"
