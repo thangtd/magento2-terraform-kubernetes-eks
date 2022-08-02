@@ -10,16 +10,31 @@ terraform {
 
 terraform {
   required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~>2.11.0"
+    }
     aws = {
       source  = "hashicorp/aws"
-      version = "~>4.20.0"
+      version = "~>4.24.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~>2.6.0"
+    }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
+    }
+    random = {
+      source = "hashicorp/random"
+      version = "3.3.2"
+    }    
   }
 }
 
 # Configure the AWS Provider
 provider "aws" {
-
   region              = var.region
   allowed_account_ids = var.allowed_account_ids
 
@@ -29,7 +44,27 @@ provider "aws" {
       Tool      = "terraform"
     }
   }
+}
 
+
+# Kubernetes Provider
+data "aws_eks_cluster_auth" "eks_cluster_auth" {
+  name = module.infrastructure.cluster_name
+}
+
+provider "kubernetes" {
+  host                   = module.infrastructure.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.infrastructure.cluster_certificate_authority_data)
+  token                  = data.aws_eks_cluster_auth.eks_cluster_auth.token
+}
+
+# Heml Provider
+provider "helm" {
+  kubernetes {
+    host                   = module.infrastructure.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.infrastructure.cluster_certificate_authority_data)
+    token                  = data.aws_eks_cluster_auth.eks_cluster_auth.token
+  }
 }
 
 module "infrastructure" {
