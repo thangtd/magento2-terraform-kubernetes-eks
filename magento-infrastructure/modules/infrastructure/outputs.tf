@@ -6,15 +6,15 @@ output "arn" {
   value = aws_eks_cluster.magento_eks.arn
 }
 
-output "cluster_name" {
+output "eks_cluster_name" {
   value = aws_eks_cluster.magento_eks.id
 }
 
-output "cluster_endpoint" {
+output "eks_cluster_endpoint" {
   value = aws_eks_cluster.magento_eks.endpoint
 }
 
-output "cluster_certificate_authority_data" {
+output "eks_cluster_certificate_authority_data" {
   value = aws_eks_cluster.magento_eks.certificate_authority[0].data
 }
 

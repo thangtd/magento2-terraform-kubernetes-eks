@@ -93,3 +93,8 @@ variable "labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "cluster_autoscaler_sa" {
+  description = "Name of the cluster autoscaler service account"
+  type        = string
+}

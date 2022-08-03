@@ -16,3 +16,5 @@ ng_max_size         = 5
 labels = {
   sponsor = "henrytran"
 }
+
+cluster_autoscaler_sa = "cluster-autoscaler-sa"

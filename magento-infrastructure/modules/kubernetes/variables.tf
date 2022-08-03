@@ -1,70 +1,39 @@
-locals {
-  name                = "${var.app}-${var.env}"
-  namespace           = local.name
-  eks_openid_provider = element(split(":oidc-provider/", aws_iam_openid_connect_provider.eks_identity_provider.arn), 1)
+variable "eks_cluster_name" {
+  description = "Name of the EKS cluster"
+  type        = string
+}
+
+variable "cluster_autoscaler_sa" {
+  description = "Name of the cluster autoscaler service account"
+  type        = string
 }
 
 variable "region" {
-  type    = string
-  default = "ap-southeast-1"
-}
-
-variable "account_id" {
-  type    = string
-  default = "336573577202"
+  description = "AWS Region Name"
+  type        = string
+  default     = ""
 }
 
 variable "org" {
-  type    = string
-  default = "org"
+  description = "Organization Name"
+  type        = string
+  default     = ""
 }
 
 variable "division" {
-  type    = string
-  default = "devops"
+  description = "Division Name"
+  type        = string
+  default     = ""
 }
 
 variable "app" {
-  type    = string
-  default = "m2"
+  description = "Application Name"
+  type        = string
+  default     = ""
 }
 
 variable "env" {
-  type    = string
-  default = "dev"
-}
-
-variable "ebs-csi-controller-sa" {
-  type    = string
-  default = "ebs-csi-controller-sa"
-}
-
-variable "fsx_csi_service_account" {
-  type    = string
-  default = "fsx-csi-controller-sa"
-}
-
-variable "efs-csi-controller-sa" {
-  type    = string
-  default = "efs-csi-controller-sa"
-}
-
-variable "service-account-read-secrets" {
-  type    = string
-  default = "service-account-read-secrets"
-}
-
-variable "amazon-cloudwatch-sa" {
-  type    = string
-  default = "amazon-cloudwatch"
-}
-
-variable "aws-loadbalancer-sa" {
-  type    = string
-  default = "aws-load-balancer-controller"
-}
-
-variable "cluster-auto-scaling-sa" {
-  type    = string
-  default = "cluster-auto-scaling-controller"
+  description = "Environment Name"
+  type        = string
+  default     = ""
 }
