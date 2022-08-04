@@ -18,3 +18,4 @@ labels = {
 }
 
 cluster_autoscaler_sa = "cluster-autoscaler-sa"
+efs_csi_controller_sa = "efs-csi-controller-sa"

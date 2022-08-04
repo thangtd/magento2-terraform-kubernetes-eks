@@ -98,3 +98,8 @@ variable "cluster_autoscaler_sa" {
   description = "Name of the cluster autoscaler service account"
   type        = string
 }
+
+variable "efs_csi_controller_sa" {
+  description = "Name of the efs csi controller service account"
+  type        = string
+}

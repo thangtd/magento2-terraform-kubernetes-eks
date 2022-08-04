@@ -30,6 +30,13 @@ output "eks_env" {
   value = var.env
 }
 
+output "private_subnet_ids" {
+  value = "${aws_subnet.magento_private_subnet_1.id},${aws_subnet.magento_private_subnet_2.id}"
+}
+
+output "public_subnet_ids" {
+  value = "${aws_subnet.magento_public_subnet_1.id},${aws_subnet.magento_public_subnet_2.id}"
+}
 
 ################################################################################
 # SSM

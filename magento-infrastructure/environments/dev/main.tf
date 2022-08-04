@@ -106,6 +106,8 @@ module "kubernetes" {
   env                   = var.env
   eks_cluster_name      = module.infrastructure.eks_cluster_name
   cluster_autoscaler_sa = var.cluster_autoscaler_sa
-
+  efs_csi_controller_sa = var.efs_csi_controller_sa
+  vpc_id                = module.infrastructure.vpc_id
+  subnet_ids            = module.infrastructure.public_subnet_ids # Using public subnets for testing purpose
 
 }

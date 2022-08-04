@@ -3,8 +3,25 @@ variable "eks_cluster_name" {
   type        = string
 }
 
+variable "vpc_id" {
+  description = "VPC ID of the EKS cluster"
+  type        = string
+  default     = ""
+}
+
+variable "subnet_ids" {
+  description = "Subnet IDs of the EKS cluster"
+  type        = string
+  default     = ""
+}
+
 variable "cluster_autoscaler_sa" {
   description = "Name of the cluster autoscaler service account"
+  type        = string
+}
+
+variable "efs_csi_controller_sa" {
+  description = "Name of the efs csi controller service account"
   type        = string
 }
 
